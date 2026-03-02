@@ -2,9 +2,9 @@
     <h1 >EcoAlerta CR</h1>
     <nav>
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.html">Inicio</a>
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.html">Reportes</a>
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInfo.html">Información</a>
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.html">Contacto</a>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.html">Reportes</a>
     </nav>
     <div>
         <form id="formularioBusqueda"action="?" method="get">
@@ -14,10 +14,17 @@
             </div>
         </form>
     </div>
-    <div class="Inicio-Registro">
-        <div class="inicio">
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Login.html">Iniciar sesión</a>
+    <div class="auth-section">
+        <!-- Contenido que cambiará según sesión -->
+        <div class="auth-links logged-out">
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Login.html" class="inicio">Iniciar sesión</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Registro.html" class="registro">Registrarse</a>
         </div>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Registro.html" class="registro">Registrarse</a>
+        <div class="auth-links logged-in" style="display: none;">
+            <span class="user-name">
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Perfil.html" class="usuario">Usuario</a>
+            </span>
+            <a href="#" id="logout-link" class="logout">Cerrar sesión</a>
+        </div>
     </div>
 </header>
