@@ -1,4 +1,4 @@
-/* styleLogin.css - Versión mejorada */
+/* styleFooter.css */
 
 :root {
   --green-dark: #2E7D32;
@@ -10,141 +10,137 @@
   --shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* styleLogin.css */
-.page-login .login-container{
-  min-height: calc(100vh - 80px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background-color: var(--gray-light);
+.site-footer{
+  background: var(--white);
+  border-top: 2px solid var(--green);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+  margin-top: 0;
 }
 
-.page-login .login-card{
-  background-color: var(--white);
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 2.5rem;
-  width: 100%;
-  max-width: 440px;
-  border: 1px solid rgba(0,0,0,0.05);
+.site-footer .footer-container{
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 0;
+  padding-top: 0px;
+  padding: 2rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1.2fr 1.4fr 1fr;
+  gap: 2rem;
+  align-items: start;
 }
 
-.page-login .login-card h2{
+/* Brand */
+.site-footer .footer-brand h5{
+  margin: 0 0 0.5rem 0;
   color: var(--green-dark);
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
-.page-login .input-group{
-  margin-bottom: 1.5rem;
+.site-footer .footer-brand p{
+  margin: 0;
+  color: #5f6b72;
+  line-height: 1.5;
+  font-size: 0.95rem;
 }
 
-.page-login .input-group label{
-  display: block;
+/* Links */
+.site-footer .footer-links{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1rem;
+}
+
+.site-footer .footer-links a{
   color: var(--gray-dark);
-  font-weight: 500;
-  margin-bottom: 0.4rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+}
+
+.site-footer .footer-links a:hover{
+  color: var(--green-dark);
+  border-bottom-color: var(--green);
+}
+
+/* Social */
+.site-footer .footer-social{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.site-footer .footer-small{
+  margin: 0;
+  color: #5f6b72;
+  font-weight: 700;
   font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.6px;
 }
 
-.page-login .input-group input{
-  width: 90%;
-  padding: 0.9rem 1.2rem;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 30px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.2s ease;
-  background-color: var(--white);
-}
-
-.page-login .input-group input:focus{
-  border-color: var(--green);
-  box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.12);
-}
-
-.page-login .opciones{
+.site-footer .social-row{
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  font-size: 0.9rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
-.page-login .opciones label{
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--gray-dark);
-  cursor: pointer;
-}
-
-.page-login .opciones input[type="checkbox"]{
-  accent-color: var(--green);
-  width: 16px;
-  height: 16px;
-  margin: 0;
-}
-
-.page-login .opciones a{
-  color: var(--green-dark);
+.site-footer .social-row a{
   text-decoration: none;
-  font-weight: 500;
-}
-
-.page-login .opciones a:hover{
-  color: var(--green);
-  text-decoration: underline;
-}
-
-.page-login .btn-login{
-  width: 100%;
-  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
-  color: var(--white);
-  border: none;
-  border-radius: 30px;
-  padding: 1rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.page-login .btn-login:hover{
-  transform: translateY(-2px);
-}
-
-.page-login .registro-link{
-  text-align: center;
-  color: var(--gray-dark);
+  color: var(--blue);
+  font-weight: 700;
   font-size: 0.95rem;
-  border-top: 1px solid #eee;
-  padding-top: 1.5rem;
-  margin: 0;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: var(--gray-light);
+  border: 1px solid #e1e6e8;
+  transition: transform 0.08s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.page-login .registro-link a{
+.site-footer .social-row a:hover{
+  background: #ffffff;
+  border-color: rgba(102,187,106,0.6);
   color: var(--green-dark);
-  text-decoration: none;
-  font-weight: 600;
+  transform: translateY(-1px);
 }
 
-.page-login .registro-link a:hover{
-  color: var(--green);
-  text-decoration: underline;
+/* Bottom bar */
+.site-footer .footer-bottom{
+  border-top: 1px solid #e7ecee;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  color: #5f6b72;
+  font-size: 0.95rem;
 }
 
-@media (max-width: 600px){
-  .page-login .login-container{ padding: 1rem; }
-  .page-login .login-card{ padding: 1.8rem; }
-  .page-login .opciones{
-    flex-direction: column;
-    gap: 0.8rem;
-    align-items: flex-start;
+.site-footer .footer-bottom #year{
+  font-weight: 800;
+  color: var(--gray-dark);
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .site-footer .footer-container{
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .site-footer .footer-links{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px){
+  .site-footer .footer-container{
+    padding: 1.5rem 1rem;
+  }
+
+  .site-footer .footer-bottom{
+    padding: 1rem;
+    font-size: 0.9rem;
   }
 }

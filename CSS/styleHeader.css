@@ -48,7 +48,6 @@
   border-bottom-color: var(--green);
 }
 
-/* 👇 Importante: ya NO uses "form" global */
 .site-header form{
   margin: 0 1rem;
 }

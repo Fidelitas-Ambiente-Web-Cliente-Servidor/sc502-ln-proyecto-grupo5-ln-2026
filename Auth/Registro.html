@@ -1,11 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script type="text/javascript"></script>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/styleHeader.css">
+    <link rel="stylesheet" href="../CSS/styleRegistro.css">
+    <link rel="stylesheet" href="../CSS/styleFooter.css">
 </head>
-<body>
+<body class="page-registro">
+    <div id="header-container"></div>
 
+    <main class="registro-container">
+        <div class="registro-card">
+            <h2>Registrarse</h2>
+            <form action="#" method="post" id="registroForm">
+
+                <div class="input-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombreR" name="Nombre Completo">
+                </div>
+                <div class="input-group">
+                    <label for="emailR">Correo</label>
+                    <input type="email" id="emailR" name="email">
+                </div>
+                <div class="input-group">
+                    <label for="telR">Telefóno</label>
+                    <input type="tel" id="telR" name="telefono">
+                </div>
+                <div class="input-group">
+                    <label for="contraR">Contraseña</label>
+                    <input type="password" id="contraR" name="contrasenna">
+                </div>
+
+                <div class="terminos">
+                    <label>
+                        <input type="checkbox" name="recordar">
+                        Aceptar Términos y Condiciones
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-registro">
+                    Registrarse
+                </button>
+            </form>
+            <div class="inicio-link">
+                ¿Ya tienes Cuenta?
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Login.html">Iniciar Sesión</a>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
 </body>
 </html>

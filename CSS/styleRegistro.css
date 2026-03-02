@@ -1,0 +1,148 @@
+/* styleRegistro.css */
+
+:root {
+  --green-dark: #2E7D32;
+  --green: #66BB6A;
+  --blue: #1565C0;
+  --gray-light: #F4F6F7;
+  --gray-dark: #263238;
+  --white: #FFFFFF;
+  --shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Contenedor principal */
+.page-registro .registro-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: var(--gray-light);
+}
+
+/* Tarjeta de registro */
+.page-registro .registro-card {
+  background-color: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.page-registro .registro-card h2 {
+  color: var(--green-dark);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Grupos de input */
+.page-registro .input-group {
+  margin-bottom: 1.2rem;
+}
+
+.page-registro .input-group label {
+  display: block;
+  color: var(--gray-dark);
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.page-registro .input-group input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 30px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: var(--white);
+  box-sizing: border-box; /* Evita desbordes */
+}
+
+.page-registro .input-group input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.12);
+}
+
+/* Términos y condiciones */
+.page-registro .terminos {
+  margin: 1.5rem 0 1.8rem;
+  font-size: 0.95rem;
+}
+
+.page-registro .terminos label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray-dark);
+  cursor: pointer;
+}
+
+.page-registro .terminos input[type="checkbox"] {
+  accent-color: var(--green);
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+/* Botón de registro */
+.page-registro .btn-registro {
+  width: 100%;
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.page-registro .btn-registro:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+}
+
+/* Enlace para iniciar sesión */
+.page-registro .inicio-link {
+  text-align: center;
+  color: var(--gray-dark);
+  font-size: 0.95rem;
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+  margin: 0;
+}
+
+.page-registro .inicio-link a {
+  color: var(--green-dark);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.page-registro .inicio-link a:hover {
+  color: var(--green);
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .page-registro .registro-container {
+    padding: 1rem;
+  }
+  .page-registro .registro-card {
+    padding: 1.8rem;
+  }
+  .page-registro .registro-card h2 {
+    font-size: 1.8rem;
+  }
+}
