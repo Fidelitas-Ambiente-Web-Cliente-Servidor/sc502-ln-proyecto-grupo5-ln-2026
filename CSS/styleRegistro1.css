@@ -134,6 +134,33 @@
   text-decoration: underline;
 }
 
+/* Estilos para validación */
+.page-registro .input-group.error input {
+  border-color: #d32f2f;
+  background-color: #ffebee;
+}
+
+.page-registro .error-mensaje {
+  display: none;
+  color: #d32f2f;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  margin-left: 0.5rem;
+}
+
+.page-registro .input-group.error .error-mensaje {
+  display: block;
+}
+
+.page-registro .terminos.error {
+  color: #d32f2f;
+}
+
+.page-registro .terminos.error .error-mensaje {
+  display: block;
+  margin-top: 0.3rem;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .page-registro .registro-container {

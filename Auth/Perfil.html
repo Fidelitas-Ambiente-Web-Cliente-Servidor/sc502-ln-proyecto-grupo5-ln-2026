@@ -7,16 +7,95 @@
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/HeaderStyle.css">
     <link rel="stylesheet" href="../CSS/styleFooter.css">
+    <link rel="stylesheet" href="../CSS/stylePerfil.css">
 </head>
-<body>
+<body class="page-perfil">
     <div id="header-container"></div>
 
-    <main>
+    <main class="perfil-container">
+        <!-- Cabecera del perfil -->
+        <div class="perfil-header">
+            <div class="perfil-avatar">
+                <img src="/sc502-ln-proyecto-grupo5-ln-2026/img/image.png" alt="Avatar" id="avatar-img">
+                <button class="btn-avatar" id="cambiarAvatar">Cambiar foto</button>
+            </div>
+            <div class="perfil-info">
+                <h2 id="nombreUsuario">Nombre del Usuario</h2>
+                <p id="emailUsuario">usuario@example.com</p>
+                <p class="miembro-desde">Miembro desde: <span id="fechaRegistro">01/01/2026</span></p>
+            </div>
+        </div>
 
+        <!-- Pestañas de navegación interna -->
+        <div class="perfil-tabs">
+            <button class="tab-link active" data-tab="datos">Mis Datos</button>
+            <button class="tab-link" data-tab="reportes">Mis Reportes</button>
+            <button class="tab-link" data-tab="password">Cambiar Contraseña</button>
+        </div>
+
+        <!-- Contenido de las pestañas -->
+        <div id="datos" class="tab-content active">
+            <h3>Información personal</h3>
+            <form id="formDatos">
+                <div class="input-group">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" name="nombre" value="Nombre del Usuario">
+                </div>
+                <div class="input-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" value="usuario@example.com">
+                </div>
+                <div class="input-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" value="8888-8888">
+                </div>
+                <button type="submit" class="btn-guardar">Guardar cambios</button>
+            </form>
+        </div>
+
+        <div id="reportes" class="tab-content">
+            <h3>Mis reportes ambientales</h3>
+            <div class="reportes-lista" id="listaReportes">
+                <!-- Aquí se cargarán dinámicamente los reportes -->
+                <div class="reporte-card">
+                    <h4>Reporte #123</h4>
+                    <p>Fecha: 15/02/2026</p>
+                    <p>Estado: <span class="estado pendiente">Pendiente</span></p>
+                    <a href="#" class="ver-detalle">Ver detalle</a>
+                </div>
+                <div class="reporte-card">
+                    <h4>Reporte #124</h4>
+                    <p>Fecha: 20/02/2026</p>
+                    <p>Estado: <span class="estado resuelto">Resuelto</span></p>
+                    <a href="#" class="ver-detalle">Ver detalle</a>
+                </div>
+            </div>
+            <button class="btn-nuevo-reporte">+ Nuevo reporte</button>
+        </div>
+
+        <div id="password" class="tab-content">
+            <h3>Cambiar contraseña</h3>
+            <form id="formPassword">
+                <div class="input-group">
+                    <label for="actual">Contraseña actual</label>
+                    <input type="password" id="actual" name="actual" required>
+                </div>
+                <div class="input-group">
+                    <label for="nueva">Nueva contraseña</label>
+                    <input type="password" id="nueva" name="nueva" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirmar">Confirmar contraseña</label>
+                    <input type="password" id="confirmar" name="confirmar" required>
+                </div>
+                <button type="submit" class="btn-guardar">Actualizar contraseña</button>
+            </form>
+        </div>
     </main>
 
     <div id="footer-container"></div>
 
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/Backend.js"></script>
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/perfil.js"></script>
 </body>
 </html>
