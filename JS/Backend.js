@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Cargar header
-  fetch("/sc502-ln-proyecto-grupo5-ln-2026/Fragmentos/header1.html")
+  fetch("/sc502-ln-proyecto-grupo5-ln-2026/Fragmentos/header.html")
     .then(response => {
       if (!response.ok) throw new Error('Error al cargar el header');
       return response.text();
@@ -47,13 +47,14 @@ function configurarSesion() {
     loggedInDiv.style.display = 'flex';
     if (userLink) userLink.textContent = userName;
 
-    const logoutBtn = document.getElementById('logout-link');
+    // Configurar botón de cerrar sesión
+    const logoutBtn = document.querySelector('#logout-link');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', function(e) {
         e.preventDefault();
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('userName');
-        window.location.reload();
+        window.location.href = '/sc502-ln-proyecto-grupo5-ln-2026/Index.html';
       });
     }
   } else {
