@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Panel Institucional</title>
+    <title>Zona Institucional</title>
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/HeaderStyle.css">
     <link rel="stylesheet" href="../CSS/styleFooter.css">
     <link rel="stylesheet" href="../CSS/stylePerfil.css">
 </head>
+
 <body class="page-perfil">
+
     <div id="header-container"></div>
 
     <main class="perfil-container">
+
         <div class="perfil-header">
             <div class="perfil-info">
-                <h2>Panel Institucional</h2>
+                <h2>Zona Institucional</h2>
             </div>
         </div>
 
         <div class="perfil-tabs">
             <button class="tab-link active" data-tab="bandeja">Bandeja de reportes</button>
-            <button class="tab-link" data-tab="revision">Revisión</button>
             <button class="tab-link" data-tab="asignacion">Asignación</button>
+            <button class="tab-link" data-tab="estado">Actualizar estado</button>
+            <button class="tab-link" data-tab="comentarios">Comentarios</button>
+            <button class="tab-link" data-tab="cerrar">Cerrar caso</button>
         </div>
 
         <div id="bandeja" class="tab-content active">
+
             <h3>Bandeja de reportes</h3>
+
             <div class="reportes-lista">
+
                 <div class="reporte-card">
                     <div>
                         <h4>Reporte #01</h4>
@@ -35,9 +44,9 @@
                     </div>
                     <div>
                         <span class="estado pendiente">Pendiente</span>
-                        <a href="#" class="ver-detalle">Ver detalle</a>
                     </div>
                 </div>
+
                 <div class="reporte-card">
                     <div>
                         <h4>Reporte #02</h4>
@@ -45,57 +54,115 @@
                         <p>Fecha: 02/03/2026</p>
                     </div>
                     <div>
-                        <span class="estado resuelto">Resuelto</span>
-                        <a href="#" class="ver-detalle">Ver detalle</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="revision" class="tab-content">
-            <h3>Revisión de reportes</h3>
-            <div class="reportes-lista">
-                <div class="reporte-card">
-                    <div>
-                        <h4>Reporte #03</h4>
-                        <p>Tipo: Quema de residuos</p>
-                        <p>Descripción: Fuego activo en zona verde</p>
-                    </div>
-                    <div>
                         <span class="estado pendiente">Pendiente</span>
-                        <a href="#" class="ver-detalle">Revisar</a>
                     </div>
                 </div>
+
             </div>
+
         </div>
 
         <div id="asignacion" class="tab-content">
+
             <h3>Asignación de reportes</h3>
+
             <div class="reportes-lista">
+
                 <div class="reporte-card">
+
                     <div>
-                        <h4>Reporte #04</h4>
-                        <p>Tipo: Daño a fauna</p>
-                        <p>Ubicación: Parque Central</p>
+                        <h4>Reporte #01</h4>
+                        <p>Tipo: Contaminación</p>
                     </div>
+
                     <div>
-                        <label for="asignarUsuario">Asignar a:</label>
+
+                        <label>Asignar a:</label>
+
                         <select id="asignarUsuario">
                             <option value="">Seleccione un usuario</option>
                             <option value="user1">Usuario 1</option>
                             <option value="user2">Usuario 2</option>
-                            <option value="user2">Usuario 3</option>
+                            <option value="user3">Usuario 3</option>
                         </select>
+
                         <button class="btn-guardar">Asignar</button>
+
                     </div>
+
                 </div>
+
             </div>
+
+        </div>
+
+        <div id="estado" class="tab-content">
+
+            <h3>Actualizar estado del reporte</h3>
+
+            <div class="input-group">
+                <label>Seleccione reporte</label>
+                <select>
+                    <option>Reporte #01</option>
+                    <option>Reporte #02</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Nuevo estado</label>
+                <select>
+                    <option>Pendiente</option>
+                    <option>En proceso</option>
+                    <option>Resuelto</option>
+                </select>
+            </div>
+
+            <button class="btn-guardar">Actualizar estado</button>
+
+        </div>
+
+        <div id="comentarios" class="tab-content">
+
+            <h3>Agregar comentario</h3>
+
+            <div class="input-group">
+                <label>Seleccione reporte</label>
+                <select>
+                    <option>Reporte #01</option>
+                    <option>Reporte #02</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Comentario</label>
+                <textarea rows="4" placeholder="Escriba el comentario"></textarea>
+            </div>
+
+            <button class="btn-guardar">Guardar comentario</button>
+
+        </div>
+
+        <div id="cerrar" class="tab-content">
+
+            <h3>Cerrar caso</h3>
+
+            <div class="input-group">
+                <label>Seleccione reporte</label>
+                <select>
+                    <option>Reporte #01</option>
+                    <option>Reporte #02</option>
+                </select>
+            </div>
+
+            <button class="btn-guardar">Cerrar caso</button>
+
         </div>
 
     </main>
 
     <div id="footer-container"></div>
-    <script src="../JS/panel.js"></script>
+    <script src="../JS/institucional.js"></script>
 
 </body>
+
 </html>
