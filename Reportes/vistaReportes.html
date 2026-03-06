@@ -16,7 +16,35 @@
 </head>
 
 <body class="page-perfil">
-    <div id="header-container"></div>
+    <header class="site-header">
+    <h1 >EcoAlerta CR</h1>
+    <nav>
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.html">Inicio</a>
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.html">Reportes</a>
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInfo.html">Información</a>
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.html">Contacto</a>
+    </nav>
+    <div>
+        <form id="formularioBusqueda"action="?" method="get">
+            <div class="areaBusqueda">
+                <input type="text" name="busqueda" class="buscar" id="B1" placeholder="Búsqueda">
+                <input type="submit" value="Buscar" class="busquedaBTN">
+            </div>
+        </form>
+    </div>
+    <div class="auth-section">
+        <div class="auth-links logged-out">
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Login.html" class="inicio">Iniciar sesión</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Registro.html" class="registro">Registrarse</a>
+        </div>
+        <div class="auth-links logged-in" style="display: none;">
+            <span class="user-name">
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Perfil.html" class="usuario">Usuario</a>
+            </span>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.html" id="logout-link" class="logout">Cerrar sesión</a>
+        </div>
+    </div>
+</header>
 
     <main class="perfil-container">
         <div class="perfil-header">
@@ -93,7 +121,36 @@
 
     </main>
 
-    <div id="footer-container"></div>
+    <footer class="site-footer">
+        <div class="footer-container">
+
+            <div class="footer-brand">
+                <h5>EcoAlerta CR</h5>
+                <p>Reportes ambientales para una Costa Rica más limpia y segura.</p>
+            </div>
+
+            <nav class="footer-links">
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.html">Inicio</a>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.html">Reportes</a>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInfo.html">Información / Ayuda</a>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.html">Contacto</a>
+            </nav>
+
+            <div class="footer-social">
+                <p class="footer-small">Síguenos</p>
+                <div class="social-row">
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">X</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            2026 <span>© EcoAlerta CR. Todos los derechos reservados.</span>
+        </div>
+    </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../JS/reportes.js"></script>
