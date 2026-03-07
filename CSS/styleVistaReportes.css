@@ -1,0 +1,315 @@
+/* styleVistaReportes.css - Listado de reportes */
+
+:root {
+  --green-dark: #2E7D32;
+  --green: #66BB6A;
+  --blue: #1565C0;
+  --gray-light: #F4F6F7;
+  --gray-dark: #263238;
+  --white: #FFFFFF;
+  --shadow: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-hover: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+body{
+    background-color: var(--gray-light);
+}
+
+/* Contenedor principal */
+.page-vista-reportes .reportes-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  background-color: var(--gray-light);
+}
+
+/* Cabecera con título y botón */
+.page-vista-reportes .reportes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-vista-reportes .reportes-header h1 {
+  color: var(--green-dark);
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  border-left: 6px solid var(--green);
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.page-vista-reportes .btn-nuevo-reporte {
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+  color: var(--white);
+  text-decoration: none;
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-block;
+  box-shadow: var(--shadow);
+}
+
+.page-vista-reportes .btn-nuevo-reporte:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Filtros */
+.page-vista-reportes .filtros-section {
+  background-color: var(--white);
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.page-vista-reportes .filtros-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.page-vista-reportes .filtros-grid select,
+.page-vista-reportes .busqueda-wrapper input {
+  padding: 0.8rem 1.2rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: var(--white);
+}
+
+.page-vista-reportes .filtros-grid select {
+  min-width: 180px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23263238' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+}
+
+.page-vista-reportes .filtros-grid select:focus,
+.page-vista-reportes .busqueda-wrapper input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.12);
+}
+
+.page-vista-reportes .busqueda-wrapper {
+  display: flex;
+  flex: 1;
+  min-width: 250px;
+}
+
+.page-vista-reportes .busqueda-wrapper input {
+  flex: 1;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+.page-vista-reportes .btn-buscar {
+  background-color: var(--green);
+  color: white;
+  border: 1.5px solid var(--green);
+  border-left: none;
+  border-radius: 0 30px 30px 0;
+  padding: 0 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 1rem;
+}
+
+.page-vista-reportes .btn-buscar:hover {
+  background-color: var(--green-dark);
+}
+
+/* Grid de reportes */
+.page-vista-reportes .reportes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Tarjeta de reporte */
+.page-vista-reportes .reporte-card {
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  border-left: 4px solid var(--green);
+}
+
+.page-vista-reportes .reporte-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.page-vista-reportes .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.page-vista-reportes .tipo {
+  background-color: var(--gray-light);
+  color: var(--gray-dark);
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.page-vista-reportes .estado {
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+}
+
+.page-vista-reportes .estado.pendiente {
+  background-color: #f44336;
+}
+
+.page-vista-reportes .estado.proceso {
+  background-color: #ff9800;
+}
+
+.page-vista-reportes .estado.resuelto {
+  background-color: #4caf50;
+}
+
+.page-vista-reportes .reporte-card h3 {
+  color: var(--green-dark);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.page-vista-reportes .ubicacion {
+  color: var(--gray-dark);
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.page-vista-reportes .descripcion {
+  color: var(--gray-dark);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+  flex: 1;
+}
+
+.page-vista-reportes .card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  margin-top: auto;
+}
+
+.page-vista-reportes .fecha {
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.page-vista-reportes .ver-detalle {
+  color: var(--green-dark);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.page-vista-reportes .ver-detalle:hover {
+  color: var(--green);
+  text-decoration: underline;
+}
+
+/* Paginación */
+.page-vista-reportes .paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.page-vista-reportes .btn-pagina {
+  background-color: var(--white);
+  border: 1.5px solid var(--green);
+  color: var(--green-dark);
+  padding: 0.6rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-vista-reportes .btn-pagina:hover:not(:disabled) {
+  background-color: var(--green);
+  color: white;
+}
+
+.page-vista-reportes .btn-pagina:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #ccc;
+}
+
+.page-vista-reportes .pagina-actual {
+  font-weight: 500;
+  color: var(--gray-dark);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-vista-reportes .reportes-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .page-vista-reportes .filtros-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-vista-reportes .busqueda-wrapper {
+    width: 100%;
+  }
+
+  .page-vista-reportes .reportes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-vista-reportes .reportes-container {
+    padding: 0 1rem;
+  }
+
+  .page-vista-reportes .btn-nuevo-reporte {
+    width: 100%;
+    text-align: center;
+  }
+}

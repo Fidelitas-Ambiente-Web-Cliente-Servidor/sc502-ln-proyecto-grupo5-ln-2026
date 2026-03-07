@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Cargar header
-  fetch("/sc502-ln-proyecto-grupo5-ln-2026/Fragmentos/header.html")
+  fetch("/sc502-ln-proyecto-grupo5-ln-2026/Fragmentos/header1.html")
     .then(response => {
       if (!response.ok) throw new Error('Error al cargar el header');
       return response.text();
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
   // Cargar footer
-  fetch("/sc502-ln-proyecto-grupo5-ln-2026/Fragmentos/footer.html")
+  fetch("/sc502-ln-proyecto-grupo5-ln-2026/Fragmentos/footer1.html")
     .then(r => {
       if (!r.ok) throw new Error("Error al cargar el footer");
       return r.text();

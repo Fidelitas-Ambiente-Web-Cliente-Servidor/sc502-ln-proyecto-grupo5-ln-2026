@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto G5</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/HeaderStyle.css">
     <link rel="stylesheet" href="CSS/styleFooter.css">
+    <link rel="stylesheet" href="CSS/HomeStyle.css">
 </head>
 
 
@@ -15,13 +17,145 @@
 
     <div id="header-container"></div>
 
-    <main>
+    <main class="home-container">
+        <!-- Hero / Bienvenida -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2>Bienvenido a EcoAlerta CR</h2>
+                <p>
+                    Plataforma para reportar incidentes ambientales y visualizar
+                    reportes simulados en distintas zonas de Costa Rica.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.html" class="btn-principal">
+                        Crear reporte
+                    </a>
+                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInfo.html" class="btn-secundario">
+                        Más información
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <h3>125</h3>
+                <p>Reportes simulados</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>48</h3>
+                <p>En proceso</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>67</h3>
+                <p>Resueltos</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>10</h3>
+                <p>Zonas monitoreadas</p>
+            </div>
+        </section>
+
+        <!-- Mapa principal -->
+        <section class="map-section">
+            <div class="section-header">
+                <div>
+                    <h2>Mapa de reportes</h2>
+                    <p>
+                        Visualiza los incidentes ambientales simulados registrados en el sistema.
+                    </p>
+                </div>
+
+                <div class="map-filters">
+                    <select id="filtroTipo">
+                        <option value="todos">Tipos</option>
+                        <option value="contaminacion">Contaminación</option>
+                        <option value="tala">Tala ilegal</option>
+                        <option value="quema">Quema de residuos</option>
+                        <option value="fauna">Daño a fauna</option>
+                        <option value="agua">Contaminación de agua</option>
+                    </select>
+
+                    <select id="filtroEstado">
+                        <option value="todos">Estados</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="proceso">En proceso</option>
+                        <option value="resuelto">Resuelto</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="mapaReportes" class="mapa-principal"></div>
+        </section>
+
+        <!-- Reportes recientes -->
+        <section class="recent-section">
+            <div class="section-header">
+                <div>
+                    <h2>Reportes recientes</h2>
+                    <p>Últimos incidentes simulados registrados en la plataforma.</p>
+                </div>
+            </div>
+
+            <div class="report-list">
+
+                <article class="report-card">
+                    <h3>Contaminación de río</h3>
+                    <p><strong>Ubicación:</strong> Heredia, Costa Rica</p>
+                    <p><strong>Estado:</strong> Pendiente</p>
+                    <p>
+                        Se reporta presencia de residuos sólidos y posible contaminación
+                        del agua en una quebrada cercana.
+                    </p>
+                </article>
+
+                <article class="report-card">
+                    <h3>Tala ilegal</h3>
+                    <p><strong>Ubicación:</strong> Alajuela, Costa Rica</p>
+                    <p><strong>Estado:</strong> En proceso</p>
+                    <p>
+                        Se detectó la tala de varios árboles en una zona protegida
+                        sin autorización visible.
+                    </p>
+                </article>
+
+                <article class="report-card">
+                    <h3>Quema de residuos</h3>
+                    <p><strong>Ubicación:</strong> San José, Costa Rica</p>
+                    <p><strong>Estado:</strong> Resuelto</p>
+                    <p>
+                        Vecinos reportaron humo constante por la quema de basura
+                        en un lote baldío.
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Llamado a la acción -->
+        <section class="cta-section">
+            <h2>¿Deseas colaborar con el ambiente?</h2>
+            <p>
+                Registra un nuevo reporte y ayuda a identificar problemas ambientales
+                en distintas comunidades del país.
+            </p>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.html" class="btn-principal">
+                Reportar ahora
+            </a>
+        </section>
 
     </main>
 
     <div id="footer-container"></div>
 
-    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/Backend.js"></script>
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/mapaIndex.js"></script>
 </body>
 
 </html>

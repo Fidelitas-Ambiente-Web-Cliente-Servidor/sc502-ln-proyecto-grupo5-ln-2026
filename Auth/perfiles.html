@@ -7,13 +7,12 @@
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/HeaderStyle.css">
     <link rel="stylesheet" href="../CSS/styleFooter.css">
-    <link rel="stylesheet" href="../CSS/stylePerfil.css">
+    <link rel="stylesheet" href="../CSS/PerfilStyle.css">
 </head>
 <body class="page-perfil">
     <div id="header-container"></div>
 
     <main class="perfil-container">
-        <!-- Cabecera del perfil -->
         <div class="perfil-header">
             <div class="perfil-avatar">
                 <img src="/sc502-ln-proyecto-grupo5-ln-2026/img/image.png" alt="Avatar" id="avatar-img">
@@ -26,14 +25,13 @@
             </div>
         </div>
 
-        <!-- Pestañas de navegación interna -->
         <div class="perfil-tabs">
             <button class="tab-link active" data-tab="datos">Mis Datos</button>
             <button class="tab-link" data-tab="reportes">Mis Reportes</button>
+            <button class="tab-link" data-tab="seguimiento">Seguimiento</button>
             <button class="tab-link" data-tab="password">Cambiar Contraseña</button>
         </div>
 
-        <!-- Contenido de las pestañas -->
         <div id="datos" class="tab-content active">
             <h3>Información personal</h3>
             <form id="formDatos">
@@ -55,22 +53,26 @@
 
         <div id="reportes" class="tab-content">
             <h3>Mis reportes ambientales</h3>
-            <div class="reportes-lista" id="listaReportes">
-                <!-- Aquí se cargarán dinámicamente los reportes -->
-                <div class="reporte-card">
-                    <h4>Reporte #123</h4>
-                    <p>Fecha: 15/02/2026</p>
-                    <p>Estado: <span class="estado pendiente">Pendiente</span></p>
-                    <a href="#" class="ver-detalle">Ver detalle</a>
-                </div>
-                <div class="reporte-card">
-                    <h4>Reporte #124</h4>
-                    <p>Fecha: 20/02/2026</p>
-                    <p>Estado: <span class="estado resuelto">Resuelto</span></p>
-                    <a href="#" class="ver-detalle">Ver detalle</a>
-                </div>
+            
+            <!-- Filtros -->
+            <div class="filtros-reportes">
+                <select id="filtroEstadoReporte">
+                    <option value="todos">Estados</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="proceso">En proceso</option>
+                    <option value="resuelto">Resuelto</option>
+                </select>
+                <input type="text" id="busquedaReporte" placeholder="Buscar por descripción...">
+                <button id="btnBuscarReporte">Buscar</button>
             </div>
-            <button class="btn-nuevo-reporte">+ Nuevo reporte</button>
+
+            <div class="reportes-lista" id="listaReportes"></div>  
+            <button class="btn-nuevo-reporte" id="btnNuevoReporte">+ Nuevo reporte</button>
+        </div>
+
+        <div id="seguimiento" class="tab-content">
+            <h3>Seguimiento y bitácora</h3>
+            <div class="timeline" id="timeline"></div>
         </div>
 
         <div id="password" class="tab-content">
@@ -95,7 +97,7 @@
 
     <div id="footer-container"></div>
 
-    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/Backend.js"></script>
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/perfil.js"></script>
 </body>
 </html>

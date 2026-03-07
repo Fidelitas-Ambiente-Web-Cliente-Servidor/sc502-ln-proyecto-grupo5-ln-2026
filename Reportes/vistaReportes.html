@@ -2,158 +2,116 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Nuevo Reporte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Reportes | EcoAlerta CR</title>
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/HeaderStyle.css">
     <link rel="stylesheet" href="../CSS/styleFooter.css">
-    <link rel="stylesheet" href="../CSS/stylePerfil.css">
-
-    <!-- Mapa -->
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
+    <link rel="stylesheet" href="../CSS/styleVistaReportes.css">
 </head>
+<body class="page-vista-reportes">
+    <div id="header-container"></div>
 
-<body class="page-perfil">
-    <header class="site-header">
-    <h1 >EcoAlerta CR</h1>
-    <nav>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.html">Inicio</a>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.html">Reportes</a>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInfo.html">Información</a>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.html">Contacto</a>
-    </nav>
-    <div>
-        <form id="formularioBusqueda"action="?" method="get">
-            <div class="areaBusqueda">
-                <input type="text" name="busqueda" class="buscar" id="B1" placeholder="Búsqueda">
-                <input type="submit" value="Buscar" class="busquedaBTN">
+    <main class="reportes-container">
+        <!-- Cabecera -->
+        <div class="reportes-header">
+            <h1>Listado de Reportes</h1>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.html" class="btn-nuevo-reporte">
+                + Nuevo reporte
+            </a>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filtros-section">
+            <div class="filtros-grid">
+                <select id="filtroTipo">
+                    <option value="">Todos los tipos</option>
+                    <option value="contaminacion">Contaminación</option>
+                    <option value="tala">Tala ilegal</option>
+                    <option value="quema">Quema de residuos</option>
+                    <option value="fauna">Daño a fauna</option>
+                    <option value="agua">Contaminación de agua</option>
+                    <option value="otro">Otro</option>
+                </select>
+
+                <select id="filtroEstado">
+                    <option value="">Todos los estados</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="proceso">En proceso</option>
+                    <option value="resuelto">Resuelto</option>
+                </select>
+
+                <div class="busqueda-wrapper">
+                    <input type="text" id="busqueda" placeholder="Buscar por ubicación o descripción...">
+                    <button class="btn-buscar">🔍</button>
+                </div>
             </div>
-        </form>
-    </div>
-    <div class="auth-section">
-        <div class="auth-links logged-out">
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Login.html" class="inicio">Iniciar sesión</a>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Registro.html" class="registro">Registrarse</a>
-        </div>
-        <div class="auth-links logged-in" style="display: none;">
-            <span class="user-name">
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Perfil.html" class="usuario">Usuario</a>
-            </span>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.html" id="logout-link" class="logout">Cerrar sesión</a>
-        </div>
-    </div>
-</header>
-
-    <main class="perfil-container">
-        <div class="perfil-header">
-            <div class="perfil-info">
-                <h2>Crear reporte</h2>
-            </div>
         </div>
 
-        <div class="tab-content active">
-            <h3>Datos del reporte</h3>
-
-            <form id="formReporte">
-
-                <div class="input-group">
-                    <label for="tipoProblema">Tipo de problema</label>
-                    <select id="tipoProblema" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="contaminacion">Contaminación</option>
-                        <option value="tala">Tala ilegal</option>
-                        <option value="quema">Quema de residuos</option>
-                        <option value="fauna">Daño a fauna</option>
-                        <option value="agua">Contaminación de agua</option>
-                        <option value="otro">Otro</option>
-                    </select>
+        <!-- Listado de reportes -->
+        <div class="reportes-grid" id="reportesGrid">
+            <!-- Tarjetas de ejemplo (luego se cargarán dinámicamente) -->
+            <article class="reporte-card">
+                <div class="card-header">
+                    <span class="tipo">Contaminación</span>
+                    <span class="estado pendiente">Pendiente</span>
                 </div>
-
-                <div class="input-group">
-                    <label for="descripcion">Descripción</label>
-                    <textarea id="descripcion" rows="5" required></textarea>
+                <h3>Contaminación de río</h3>
+                <p class="ubicacion">Heredia, Costa Rica</p>
+                <p class="descripcion">
+                    Se reporta presencia de residuos sólidos y posible contaminación del agua en una quebrada cercana.
+                </p>
+                <div class="card-footer">
+                    <span class="fecha">2024-03-15</span>
+                    <a href="#" class="ver-detalle">Ver detalle →</a>
                 </div>
+            </article>
 
-                <div class="input-group">
-                    <label for="fecha">Fecha</label>
-                    <input type="date" id="fecha" required>
+            <article class="reporte-card">
+                <div class="card-header">
+                    <span class="tipo">Tala ilegal</span>
+                    <span class="estado proceso">En proceso</span>
                 </div>
-
-                <div class="input-group">
-                    <label for="hora">Hora</label>
-                    <input type="time" id="hora" required>
+                <h3>Tala ilegal en Alajuela</h3>
+                <p class="ubicacion">Alajuela, Costa Rica</p>
+                <p class="descripcion">
+                    Se detectó la tala de varios árboles en una zona protegida sin autorización visible.
+                </p>
+                <div class="card-footer">
+                    <span class="fecha">2024-03-14</span>
+                    <a href="#" class="ver-detalle">Ver detalle →</a>
                 </div>
+            </article>
 
-                <div class="input-group">
-                    <label for="gravedad">Gravedad</label>
-                    <select id="gravedad" required>
-                        <option value="">Seleccione el nivel</option>
-                        <option value="baja">Baja</option>
-                        <option value="media">Media</option>
-                        <option value="alta">Alta</option>
-                        <option value="critica">Crítica</option>
-                    </select>
+            <article class="reporte-card">
+                <div class="card-header">
+                    <span class="tipo">Quema de residuos</span>
+                    <span class="estado resuelto">Resuelto</span>
                 </div>
-
-                <div class="input-group">
-                    <label for="imagenes">Subir imágenes</label>
-                    <input type="file" id="imagenes" accept="image/*" multiple>
+                <h3>Quema en lote baldío</h3>
+                <p class="ubicacion">San José, Costa Rica</p>
+                <p class="descripcion">
+                    Vecinos reportaron humo constante por la quema de basura en un lote baldío.
+                </p>
+                <div class="card-footer">
+                    <span class="fecha">2024-03-10</span>
+                    <a href="#" class="ver-detalle">Ver detalle →</a>
                 </div>
+            </article>
+        </div>
 
-                <div class="input-group">
-                    <label>Vista previa</label>
-                    <div id="previewImagenes"></div>
-                </div>
-
-                <div class="input-group">
-                    <label>Ubicación del incidente</label>
-                    <div id="mapa" style="height: 350px; border-radius: 16px;"></div>
-                </div>
-
-                <button type="submit" class="btn-guardar">
-                    Enviar reporte
-                </button>
-
-            </form>
+        <!-- Paginación simple -->
+        <div class="paginacion">
+            <button class="btn-pagina" disabled>&laquo; Anterior</button>
+            <span class="pagina-actual">Página 1 de 1</span>
+            <button class="btn-pagina">Siguiente &raquo;</button>
         </div>
 
     </main>
 
-    <footer class="site-footer">
-        <div class="footer-container">
+    <div id="footer-container"></div>
 
-            <div class="footer-brand">
-                <h5>EcoAlerta CR</h5>
-                <p>Reportes ambientales para una Costa Rica más limpia y segura.</p>
-            </div>
-
-            <nav class="footer-links">
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.html">Inicio</a>
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.html">Reportes</a>
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInfo.html">Información / Ayuda</a>
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.html">Contacto</a>
-            </nav>
-
-            <div class="footer-social">
-                <p class="footer-small">Síguenos</p>
-                <div class="social-row">
-                    <a href="#">Facebook</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">X</a>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-            2026 <span>© EcoAlerta CR. Todos los derechos reservados.</span>
-        </div>
-    </footer>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="../JS/reportes.js"></script>
-
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/filtrosReportes.js"></script>
 </body>
 </html>
