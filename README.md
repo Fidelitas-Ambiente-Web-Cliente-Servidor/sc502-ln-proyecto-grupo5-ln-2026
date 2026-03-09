@@ -1,3 +1,6 @@
+#IMPORTANTE
+El compañero Jafet Córdoba Calderón tiene problemas para unirse al repositorio y por esa razón no aparece como colaborador.
+
 # DONE (FRONT END)
 Bryan: Páginas de registro, login y recuperación de contraseña. Página de perfil de usuario (editar datos). Formularios validados con JavaScript (correo, contraseña, campos requeridos). Página de Información / Ayuda.
 
