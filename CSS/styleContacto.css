@@ -1,0 +1,199 @@
+/* styleContacto.css - Página de contacto */
+
+:root {
+  --green-dark: #2E7D32;
+  --green: #66BB6A;
+  --blue: #1565C0;
+  --gray-light: #F4F6F7;
+  --gray-dark: #263238;
+  --white: #FFFFFF;
+  --shadow: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-hover: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+body{
+  background-color: var(--gray-light);
+}
+
+/* Contenedor principal */
+
+.contacto-container{
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Header de la página */
+
+.contacto-header{
+  background-color: var(--white);
+  border-radius: 24px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.contacto-header h2{
+  color: var(--green-dark);
+  font-size: 2rem;
+  font-weight: 600;
+  border-left: 6px solid var(--green);
+  padding-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.contacto-header p{
+  color: var(--gray-dark);
+  font-size: 0.95rem;
+}
+
+/* Sección formulario */
+
+.contacto-form-section{
+  background-color: var(--white);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+
+/* Formulario */
+
+.contacto-form{
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group{
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label{
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: var(--gray-dark);
+}
+
+/* Inputs */
+
+.form-group input,
+.form-group textarea{
+  padding: 0.8rem 1.2rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.form-group textarea{
+  border-radius: 18px;
+  resize: vertical;
+}
+
+/* Focus inputs */
+
+.form-group input:focus,
+.form-group textarea:focus{
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(102,187,106,0.12);
+}
+
+/* Botón */
+
+.btn-principal{
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+  color: var(--white);
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow);
+  align-self: flex-start;
+}
+
+.btn-principal:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Mensaje de confirmación */
+
+.mensaje-confirmacion{
+  margin-top: 1rem;
+  font-weight: 600;
+  color: var(--green-dark);
+}
+
+/* Información de contacto */
+
+.contacto-info{
+  background-color: var(--white);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.contacto-info h3{
+  color: var(--green-dark);
+  margin-bottom: 1.5rem;
+}
+
+/* Tarjetas */
+
+.info-cards{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 1.5rem;
+}
+
+.info-card{
+  background-color: var(--gray-light);
+  border-radius: 18px;
+  padding: 1.5rem;
+  text-align: center;
+  border-left: 4px solid var(--green);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.info-card:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.info-card h4{
+  color: var(--green-dark);
+  margin-bottom: 0.3rem;
+}
+
+.info-card p{
+  color: var(--gray-dark);
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+
+@media (max-width:768px){
+
+  .contacto-header h2{
+    font-size: 1.6rem;
+  }
+
+  .btn-principal{
+    width: 100%;
+    text-align: center;
+  }
+
+}
+
+@media (max-width:480px){
+
+  .contacto-container{
+    padding: 0 1rem;
+  }
+
+}
