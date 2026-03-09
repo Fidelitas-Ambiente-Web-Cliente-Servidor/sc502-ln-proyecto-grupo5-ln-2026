@@ -1,4 +1,4 @@
-#IMPORTANTE
+# IMPORTANTE
 El compañero Jafet Córdoba Calderón tiene problemas para unirse al repositorio y por esa razón no aparece como colaborador.
 
 # DONE (FRONT END)
