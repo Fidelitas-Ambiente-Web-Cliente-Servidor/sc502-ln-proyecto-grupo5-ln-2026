@@ -1,18 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Perfil | EcoAlerta CR</title>
-    <script type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | EcoAlerta CR</title>
+
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/HeaderStyle.css">
     <link rel="stylesheet" href="../CSS/styleFooter.css">
-    <link rel="stylesheet" href="../CSS/stylePerfil.css">
+    <link rel="stylesheet" href="../CSS/styleAdminPanel.css">
 </head>
 
 <body>
 
-<p> En construccion</p>
+    <div id="header-container"></div>
+
+    <!-- Modal detalle -->
+    <div id="modalDetalleReporte" class="modal-detalle">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" id="cerrarModalDetalle">&times;</span>
+
+            <h3>Detalle del Reporte</h3>
+
+            <div class="detalle-grid">
+                <p><strong>ID:</strong> <span id="detalleId"></span></p>
+                <p><strong>Tipo:</strong> <span id="detalleTipo"></span></p>
+                <p><strong>Usuario:</strong> <span id="detalleUsuario"></span></p>
+                <p><strong>Gravedad:</strong> <span id="detalleGravedad"></span></p>
+                <p><strong>Estado:</strong> <span id="detalleEstado"></span></p>
+                <p><strong>Fecha:</strong> <span id="detalleFecha"></span></p>
+                <p><strong>Hora:</strong> <span id="detalleHora"></span></p>
+                <p><strong>Ubicación:</strong> <span id="detalleUbicacion"></span></p>
+            </div>
+
+            <div class="detalle-bloque">
+                <h4>Descripción</h4>
+                <p id="detalleDescripcion"></p>
+            </div>
+
+            <div class="detalle-bloque">
+                <h4>Evidencia</h4>
+                <div id="detalleImagenes" class="detalle-imagenes"></div>
+            </div>
+
+            <div class="detalle-bloque">
+                <h4>Mapa</h4>
+                <button id="btnVerMapa" class="accion-btn mapa-btn">
+                    Ver en mapa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="admin-main">
+
+        <h2>Panel de Administración</h2>
+        <p>Gestión general del sistema EcoAlerta CR</p>
+
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="usuarios">
+                Gestión de Usuarios
+            </button>
+
+            <button class="tab-btn" data-tab="reportes">
+                Moderación de Reportes
+            </button>
+
+            <button class="tab-btn" data-tab="estadisticas">
+                Estadísticas
+            </button>
+        </div>
+
+        <!-- Seccion usuarios -->
+        <section id="usuarios" class="tab-content active">
+            <h3>Usuarios Registrados</h3>
+
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaUsuarios"></tbody>
+            </table>
+        </section>
+
+        <!--Seccion reportes -->
+        <section id="reportes" class="tab-content">
+            <h3>Reportes del Sistema</h3>
+
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Usuario</th>
+                        <th>Gravedad</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaReportes"></tbody>
+            </table>
+        </section>
+
+        <!-- Seccion estadisticas -->
+        <section id="estadisticas" class="tab-content">
+            <h3>Estadísticas del Sistema</h3>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h4>Total Usuarios</h4>
+                    <p id="totalUsuarios">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h4>Total Reportes</h4>
+                    <p id="totalReportes">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h4>Reportes Pendientes</h4>
+                    <p id="totalPendientes">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h4>Reportes Resueltos</h4>
+                    <p id="totalResueltos">0</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
+    <script src="../JS/Backend.js"></script>
+    <script src="../JS/adminPanel.js"></script>
+
 </body>
 
 </html>
