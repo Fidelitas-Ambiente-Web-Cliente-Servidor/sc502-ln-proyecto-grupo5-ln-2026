@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,7 +15,7 @@
 
 <body>
 
-    <div id="header-container"></div>
+    <?php include '../Fragmentos/header.php'; ?>
 
     <!-- Modal detalle -->
     <div id="modalDetalleReporte" class="modal-detalle">
@@ -143,7 +144,7 @@
 
     </main>
 
-    <div id="footer-container"></div>
+    <?php include '../Fragmentos/footer.php'; ?>
 
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="../JS/Backend.js"></script>

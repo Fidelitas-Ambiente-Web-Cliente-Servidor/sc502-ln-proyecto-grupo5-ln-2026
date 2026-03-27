@@ -1,64 +1,44 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Cargar header
-  fetch("/sc502-ln-proyecto-grupo5-ln-2026/Fragmentos/header1.html")
-    .then(response => {
-      if (!response.ok) throw new Error('Error al cargar el header');
-      return response.text();
-    })
-    .then(data => {
-      document.getElementById('header-container').innerHTML = data;
-      configurarSesion();
-    })
-    .catch(error => {
-      console.error('No se pudo cargar el header:', error);
+  // Esperar un momento para asegurar que el DOM esté completamente renderizado
+  setTimeout(function() {
+    const userMenu = document.querySelector('.user-menu');
+    if (!userMenu) {
+      console.log('No se encontró .user-menu (usuario no logueado)');
+      return;
+    }
+
+    const trigger = userMenu.querySelector('.user-trigger');
+    if (!trigger) {
+      console.log('No se encontró .user-trigger');
+      return;
+    }
+
+    // Función para abrir/cerrar
+    function toggleMenu(event) {
+      event.stopPropagation();
+      userMenu.classList.toggle('open');
+      console.log('Menú toggled, open:', userMenu.classList.contains('open'));
+    }
+
+    trigger.addEventListener('click', toggleMenu);
+
+    // Cerrar al hacer clic fuera
+    document.addEventListener('click', function(event) {
+      if (!userMenu.contains(event.target)) {
+        userMenu.classList.remove('open');
+      }
     });
 
-  // Cargar footer
-  fetch("/sc502-ln-proyecto-grupo5-ln-2026/Fragmentos/footer1.html")
-    .then(r => {
-      if (!r.ok) throw new Error("Error al cargar el footer");
-      return r.text();
-    })
-    .then(html => {
-      const cont = document.getElementById("footer-container");
-      if (!cont) {
-        console.error("No existe #footer-container en esta página.");
-        return;
+    // Cerrar con ESC
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && userMenu.classList.contains('open')) {
+        userMenu.classList.remove('open');
       }
-      cont.innerHTML = html;
-      const year = cont.querySelector("#year");
-      if (year) year.textContent = new Date().getFullYear();
-    })
-    .catch(err => console.error("No se pudo cargar el footer:", err));
+    });
+
+    // Opcional: cerrar si se redimensiona la ventana (por si el menú queda mal posicionado)
+    window.addEventListener('resize', function() {
+      userMenu.classList.remove('open');
+    });
+  }, 100); // pequeño retraso por si hay algún renderizado asíncrono
 });
-
-function configurarSesion() {
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const userName = localStorage.getItem('userName') || 'Usuario';
-
-  const loggedOutDiv = document.querySelector('.auth-links.logged-out');
-  const loggedInDiv = document.querySelector('.auth-links.logged-in');
-  const userLink = document.querySelector('.user-name .usuario');
-
-  if (!loggedOutDiv || !loggedInDiv) return;
-
-  if (isLoggedIn) {
-    loggedOutDiv.style.display = 'none';
-    loggedInDiv.style.display = 'flex';
-    if (userLink) userLink.textContent = userName;
-
-    // Configurar botón de cerrar sesión
-    const logoutBtn = document.querySelector('#logout-link');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userName');
-        window.location.href = '/sc502-ln-proyecto-grupo5-ln-2026/Index.html';
-      });
-    }
-  } else {
-    loggedOutDiv.style.display = 'flex';
-    loggedInDiv.style.display = 'none';
-  }
-}

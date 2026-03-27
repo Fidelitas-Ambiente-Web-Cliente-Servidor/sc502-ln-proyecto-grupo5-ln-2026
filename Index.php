@@ -1,10 +1,11 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto G5</title>
+    <title>EcoAlerta CR | Proyecto G5</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/HeaderStyle.css">
@@ -12,10 +13,8 @@
     <link rel="stylesheet" href="CSS/HomeStyle.css">
 </head>
 
-
 <body>
-
-    <div id="header-container"></div>
+    <?php include 'Fragmentos/header.php'; ?>
 
     <main class="home-container">
         <!-- Hero / Bienvenida -->
@@ -28,10 +27,10 @@
                 </p>
 
                 <div class="hero-actions">
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.html" class="btn-principal">
+                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
                         Crear reporte
                     </a>
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.html" class="btn-secundario">
+                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">
                         Más información
                     </a>
                 </div>
@@ -103,7 +102,6 @@
             </div>
 
             <div class="report-list">
-
                 <article class="report-card">
                     <h3>Contaminación de río</h3>
                     <p><strong>Ubicación:</strong> Heredia, Costa Rica</p>
@@ -133,7 +131,6 @@
                         en un lote baldío.
                     </p>
                 </article>
-
             </div>
         </section>
 
@@ -144,17 +141,16 @@
                 Registra un nuevo reporte y ayuda a identificar problemas ambientales
                 en distintas comunidades del país.
             </p>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.html" class="btn-principal">
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
                 Reportar ahora
             </a>
         </section>
-
     </main>
 
-    <div id="footer-container"></div>
+    <?php include 'Fragmentos/footer.php'; ?>
 
-    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/mapaIndex.js"></script>
 </body>
 

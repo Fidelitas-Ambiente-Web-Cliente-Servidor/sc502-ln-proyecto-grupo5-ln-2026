@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -11,7 +12,7 @@
 </head>
 
 <body class="page-info">
-    <div id="header-container"></div>
+    <?php include '../Fragmentos/header.php'; ?>
 
     <main class="info-container">
 
@@ -95,14 +96,14 @@
         <section class="info-section contact-prompt">
             <h2>¿No encuentras lo que buscas?</h2>
             <p>Contáctanos directamente para resolver tus dudas.</p>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.html" class="btn-contacto">Ir a
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.php" class="btn-contacto">Ir a
                 Contacto</a>
         </section>
     </main>
 
-    <div id="footer-container"></div>
+    <?php include '../Fragmentos/footer.php'; ?>
 
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
 </body>
 
-</html>
+</html>s

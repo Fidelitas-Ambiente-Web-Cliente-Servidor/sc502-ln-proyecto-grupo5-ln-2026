@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,7 +17,7 @@
 </head>
 
 <body class="page-reportes">
-    <div id="header-container"></div>
+    <?php include '../Fragmentos/header.php'; ?>
 
     <main class="perfil-container">
         <div class="perfil-header">
@@ -93,7 +94,7 @@
 
     </main>
 
-    <div id="footer-container"></div>
+    <?php include '../Fragmentos/footer.php'; ?>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>

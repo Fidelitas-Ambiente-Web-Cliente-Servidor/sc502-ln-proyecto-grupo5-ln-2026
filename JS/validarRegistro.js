@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', function() {
     return valido;
   }
 
-  // Validar términos
+  // Validar términos (ahora usando el nombre correcto 'terminos')
   function validarTerminos() {
-    const terminosCheck = document.querySelector('input[name="recordar"]');
+    const terminosCheck = document.querySelector('input[name="terminos"]');
     const terminosGroup = document.querySelector('.terminos');
-    if (!terminosCheck.checked) {
+    if (!terminosCheck || !terminosCheck.checked) {
       terminosGroup.classList.add('error');
       let errorSpan = terminosGroup.querySelector('.error-mensaje');
       if (!errorSpan) {
@@ -90,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Evento submit
   form.addEventListener('submit', function(e) {
-    e.preventDefault();
+    // No prevenimos el envío por defecto; si hay errores, lo prevenimos después
+    let formValido = true;
 
     const campos = [
       document.getElementById('nombreR'),
@@ -98,8 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('telR'),
       document.getElementById('contraR')
     ];
-
-    let formValido = true;
 
     campos.forEach(campo => {
       if (!validarCampo(campo)) {
@@ -111,11 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
       formValido = false;
     }
 
-    if (formValido) {
-      alert('Registro exitoso (simulado).');
-      // Aquí puedes redirigir o enviar el formulario
-      // form.submit();
+    if (!formValido) {
+      e.preventDefault(); // Solo prevenimos si hay errores
     }
+    // Si es válido, el formulario se envía normalmente
   });
 
   // Limpiar errores mientras se escribe
@@ -129,13 +127,15 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Limpiar error del checkbox al cambiar
-  const terminosCheck = document.querySelector('input[name="recordar"]');
-  terminosCheck.addEventListener('change', function() {
-    const terminosGroup = document.querySelector('.terminos');
-    if (this.checked) {
-      terminosGroup.classList.remove('error');
-      const errorSpan = terminosGroup.querySelector('.error-mensaje');
-      if (errorSpan) errorSpan.remove();
-    }
-  });
+  const terminosCheck = document.querySelector('input[name="terminos"]');
+  if (terminosCheck) {
+    terminosCheck.addEventListener('change', function() {
+      const terminosGroup = document.querySelector('.terminos');
+      if (this.checked) {
+        terminosGroup.classList.remove('error');
+        const errorSpan = terminosGroup.querySelector('.error-mensaje');
+        if (errorSpan) errorSpan.remove();
+      }
+    });
+  }
 });

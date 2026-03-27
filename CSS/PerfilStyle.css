@@ -1,4 +1,4 @@
-/* stylePerfil.css - Versión mejorada */
+/* stylePerfil.css */
 
 :root {
   --green-dark: #2E7D32;
@@ -471,7 +471,102 @@
     border-radius: 16px;
 }
 
+.page-perfil .alert {
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-perfil .alert-success {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-left: 6px solid #2e7d32;
+    color: #1b5e20;
+}
+
+.page-perfil .alert-success .alert-icon {
+    font-size: 1.8rem;
+    font-weight: bold;
+    background: #2e7d32;
+    color: white;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(46,125,50,0.3);
+}
+
+.page-perfil .alert-error {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-left: 6px solid #c62828;
+    color: #b71c1c;
+}
+
+.page-perfil .alert-error .alert-icon {
+    font-size: 1.6rem;
+    font-weight: bold;
+    background: #c62828;
+    color: white;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(198,40,40,0.3);
+}
+
+.page-perfil .alert-message-list {
+    margin: 0;
+    padding-left: 1.2rem;
+    list-style: none;
+}
+
+.page-perfil .alert-message-list li {
+    margin: 0.2rem 0;
+    position: relative;
+}
+
+.page-perfil .alert-message-list li::before {
+    content: "•";
+    color: #c62828;
+    font-weight: bold;
+    display: inline-block;
+    width: 1rem;
+    margin-left: -1rem;
+}
+
+.page-perfil .alert-message {
+    flex: 1;
+}
+
 /* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .page-perfil .alert {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
 @media (max-width: 768px) {
   .page-perfil .perfil-header {
     flex-direction: column;

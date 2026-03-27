@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,7 +15,7 @@
 
 <body>
 
-    <div id="header-container"></div>
+    <?php include '../Fragmentos/header.php'; ?>
 
     <main class="contacto-container">
 
@@ -90,7 +91,7 @@
 
     </main>
 
-    <div id="footer-container"></div>
+    <?php include '../Fragmentos/footer.php'; ?>
 
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/contacto.js"></script>

@@ -1,14 +1,13 @@
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    if (!form) return;
 
-    // Simulación: si email y password no están vacíos, "iniciar sesión"
-    if (email && password) {
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userName', email.split('@')[0]); // Usar parte del email como nombre
-        window.location.href = '/sc502-ln-proyecto-grupo5-ln-2026/Index.html';
-    } else {
-        alert('Credenciales inválidas');
-    }
+    form.addEventListener('submit', function(e) {
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        if (!email.value.trim() || !password.value.trim()) {
+            alert('Por favor complete todos los campos');
+            e.preventDefault();
+        }
     });
+});

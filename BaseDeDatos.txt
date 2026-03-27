@@ -1,0 +1,11 @@
+---Tabla de Usuarios---
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefono VARCHAR(20) NOT NULL,
+    contraseña VARCHAR(255) NOT NULL,
+    tipo ENUM('usuario', 'admin') DEFAULT 'usuario',
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

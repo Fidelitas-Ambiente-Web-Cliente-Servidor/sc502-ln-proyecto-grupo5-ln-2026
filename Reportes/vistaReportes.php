@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,13 +11,13 @@
     <link rel="stylesheet" href="../CSS/styleVistaReportes.css">
 </head>
 <body class="page-vista-reportes">
-    <div id="header-container"></div>
+    <?php include '../Fragmentos/header.php'; ?>
 
     <main class="reportes-container">
         <!-- Cabecera -->
         <div class="reportes-header">
             <h1>Listado de Reportes</h1>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.html" class="btn-nuevo-reporte">
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-nuevo-reporte">
                 + Nuevo reporte
             </a>
         </div>
@@ -109,7 +110,7 @@
 
     </main>
 
-    <div id="footer-container"></div>
+    <?php include '../Fragmentos/footer.php'; ?>
 
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/filtrosReportes.js"></script>
