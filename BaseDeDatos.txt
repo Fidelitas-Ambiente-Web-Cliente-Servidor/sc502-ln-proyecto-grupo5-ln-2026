@@ -1,5 +1,5 @@
----Tabla de Usuarios---
 
+-- Tabla usuarios --
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -8,4 +8,98 @@ CREATE TABLE usuarios (
     contraseña VARCHAR(255) NOT NULL,
     tipo ENUM('usuario', 'admin') DEFAULT 'usuario',
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB;
+
+-- Categorías de problemas --
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    activo BOOLEAN DEFAULT TRUE
+) ENGINE=InnoDB;
+
+-- Estados del ciclo de vida de un reporte
+CREATE TABLE estados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,  -- enviado, en_revision, asignado, en_proceso, resuelto, cerrado
+    descripcion TEXT,
+    orden INT NOT NULL,
+    activo BOOLEAN DEFAULT TRUE
+) ENGINE=InnoDB;
+
+-- Instituciones que atenderán los reportes (municipalidades, ministerios, ONG)
+CREATE TABLE instituciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    contacto VARCHAR(100),
+    tipo ENUM('municipalidad', 'ministerio', 'ong', 'otro') NOT NULL
+) ENGINE=InnoDB;
+
+-- Reportes de incidentes (corazón del sistema)
+CREATE TABLE reportes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,                -- quien reporta
+    categoria_id INT NOT NULL,              -- tipo de problema
+    estado_id INT NOT NULL,                 -- estado actual
+    institucion_id INT NULL,                -- institución asignada
+    descripcion TEXT NOT NULL,              -- textarea
+    fecha_hora_incidente DATETIME NOT NULL, -- fecha + hora del formulario
+    gravedad ENUM('baja', 'media', 'alta', 'critica') NOT NULL,
+    latitud DECIMAL(10,8) NOT NULL,         -- del mapa
+    longitud DECIMAL(11,8) NOT NULL,        -- del mapa
+    direccion VARCHAR(255),                 -- dirección opcional (del mapa)
+    asignado_por INT NULL,                  -- admin que asignó la institución
+    fecha_asignacion DATETIME NULL,
+    fecha_cierre DATE NULL,
+    comentario_cierre TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+    FOREIGN KEY (estado_id) REFERENCES estados(id),
+    FOREIGN KEY (institucion_id) REFERENCES instituciones(id),
+    FOREIGN KEY (asignado_por) REFERENCES usuarios(id)
+) ENGINE=InnoDB;
+
+-- Evidencias (imágenes subidas en el formulario)
+CREATE TABLE evidencias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reporte_id INT NOT NULL,
+    url VARCHAR(500) NOT NULL,          -- ruta del archivo
+    tipo ENUM('imagen', 'video', 'documento') NOT NULL,
+    descripcion VARCHAR(255),
+    fecha_subida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (reporte_id) REFERENCES reportes(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Historial de cambios de estado (para seguimiento)
+CREATE TABLE seguimiento_estados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reporte_id INT NOT NULL,
+    estado_id INT NOT NULL,
+    usuario_id INT NOT NULL,            -- quien realizó el cambio
+    comentario TEXT,
+    fecha_cambio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (reporte_id) REFERENCES reportes(id) ON DELETE CASCADE,
+    FOREIGN KEY (estado_id) REFERENCES estados(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB;
+
+-- Notificaciones internas del sistema (retroalimentación al ciudadano)
+CREATE TABLE notificaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    titulo VARCHAR(200) NOT NULL,
+    mensaje TEXT NOT NULL,
+    leido BOOLEAN DEFAULT FALSE,
+    referencia_tipo ENUM('reporte', 'estado') NULL,
+    referencia_id INT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Índices para consultas frecuentes (mapa, estado, etc.)
+CREATE INDEX idx_reportes_ubicacion ON reportes(latitud, longitud);
+CREATE INDEX idx_reportes_estado ON reportes(estado_id);
+CREATE INDEX idx_seguimiento_reporte ON seguimiento_estados(reporte_id);
+CREATE INDEX idx_notificaciones_usuario ON notificaciones(usuario_id, leido);
