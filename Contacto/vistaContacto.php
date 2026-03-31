@@ -1,4 +1,45 @@
 <?php session_start(); ?>
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+?>
+<?php include '../conexion.php'; ?>
+<?php
+$mensajeExito = '';
+$mensajeError = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre  = trim($_POST['nombre']  ?? '');
+    $correo  = trim($_POST['correo']  ?? '');
+    $asunto  = trim($_POST['asunto']  ?? '');
+    $mensaje = trim($_POST['mensaje'] ?? '');
+
+    if (!$nombre || !$correo || !$asunto || !$mensaje) {
+        $mensajeError = 'Por favor complete todos los campos.';
+    } elseif (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        $mensajeError = 'El correo electrónico no es válido.';
+    } else {
+        $stmt = $conn->prepare("
+            INSERT INTO mensajes (nombre, correo, asunto, mensaje)
+            VALUES (?, ?, ?, ?)
+        ");
+
+        if (!$stmt) {
+            $mensajeError = 'Error prepare: ' . $conn->error;
+        } else {
+            $stmt->bind_param("ssss", $nombre, $correo, $asunto, $mensaje);
+
+            if (!$stmt->execute()) {
+                $mensajeError = 'Error execute: ' . $stmt->error;
+            } else {
+                $stmt->close();
+                $mensajeExito = '¡Mensaje enviado correctamente! Nos pondremos en contacto pronto.';
+            }
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -31,26 +72,41 @@
         <!-- Formulario -->
         <section class="contacto-form-section">
 
-            <form id="formContacto" class="contacto-form">
+            <?php if ($mensajeExito): ?>
+                <div class="mensaje-confirmacion exito"><?= htmlspecialchars($mensajeExito) ?></div>
+            <?php endif; ?>
+
+            <?php if ($mensajeError): ?>
+                <div class="mensaje-confirmacion error"><?= htmlspecialchars($mensajeError) ?></div>
+            <?php endif; ?>
+
+            <form id="formContacto" class="contacto-form" method="POST" action="">
 
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" placeholder="Ingrese su nombre">
+                    <input type="text" id="nombre" name="nombre"
+                           placeholder="Ingrese su nombre"
+                           value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="correo">Correo electrónico</label>
-                    <input type="email" id="correo" placeholder="correo@ejemplo.com">
+                    <input type="email" id="correo" name="correo"
+                           placeholder="correo@ejemplo.com"
+                           value="<?= htmlspecialchars($_POST['correo'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="asunto">Asunto</label>
-                    <input type="text" id="asunto" placeholder="Motivo del mensaje">
+                    <input type="text" id="asunto" name="asunto"
+                           placeholder="Motivo del mensaje"
+                           value="<?= htmlspecialchars($_POST['asunto'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="mensaje">Mensaje</label>
-                    <textarea id="mensaje" rows="5" placeholder="Escriba su mensaje aquí"></textarea>
+                    <textarea id="mensaje" name="mensaje" rows="5"
+                              placeholder="Escriba su mensaje aquí"><?= htmlspecialchars($_POST['mensaje'] ?? '') ?></textarea>
                 </div>
 
                 <button type="submit" class="btn-principal">
