@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Zona Institucional</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/HeaderStyle.css">
+    <link rel="stylesheet" href="../CSS/styleFooter.css">
+    <link rel="stylesheet" href="../CSS/PerfilStyle.css">
+</head>
+
+<body class="page-perfil">
+
+    <!-- Header -> Reemplazado desde Fragmentos/header.php -->
+    <header class="site-header">
+        <h1>EcoAlerta CR</h1>
+        <nav>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.php">Inicio</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php">Reportes</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php">Información</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.html">Bandeja Reportes</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.html">Panel Administracion</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.php">Contacto</a>
+        </nav>
+        <div>
+            <form id="formularioBusqueda" action="?" method="get">
+                <div class="areaBusqueda">
+                    <input type="text" name="busqueda" class="buscar" id="B1" placeholder="Búsqueda">
+                    <input type="submit" value="Buscar" class="busquedaBTN">
+                </div>
+            </form>
+        </div>
+        <div class="auth-section">
+            <div class="user-menu">
+                <div class="user-trigger">
+                    <div class="user-avatar">
+                        <img src="/sc502-ln-proyecto-grupo5-ln-2026/img/image.png" alt="Avatar" class="avatar-img">
+                    </div>
+                    <span class="user-name">Usuario Institucional</span>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <ul class="dropdown-menu">
+                    <li><a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/perfiles.php">Mi perfil</a></li>
+                    <li><a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/logout.php">Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="perfil-container">
+
+        <main class="perfil-container">
+
+            <div class="perfil-header">
+                <div class="perfil-info">
+                    <h2>Zona Institucional</h2>
+                </div>
+            </div>
+
+            <div class="perfil-tabs">
+                <button class="tab-link active" data-tab="bandeja">Bandeja de reportes</button>
+                <button class="tab-link" data-tab="asignacion">Asignación</button>
+                <button class="tab-link" data-tab="estado">Actualizar estado</button>
+                <button class="tab-link" data-tab="comentarios">Comentarios</button>
+                <button class="tab-link" data-tab="cerrar">Cerrar caso</button>
+            </div>
+
+            <div id="bandeja" class="tab-content active">
+
+                <h3>Bandeja de reportes</h3>
+
+                <div class="reportes-lista">
+
+                    <div class="reporte-card">
+                        <div>
+                            <h4>Reporte #01</h4>
+                            <p>Tipo: Contaminación</p>
+                            <p>Fecha: 01/03/2026</p>
+                        </div>
+                        <div>
+                            <span class="estado pendiente">Pendiente</span>
+                        </div>
+                    </div>
+
+                    <div class="reporte-card">
+                        <div>
+                            <h4>Reporte #02</h4>
+                            <p>Tipo: Tala ilegal</p>
+                            <p>Fecha: 02/03/2026</p>
+                        </div>
+                        <div>
+                            <span class="estado pendiente">Pendiente</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="asignacion" class="tab-content">
+
+                <h3>Asignación de reportes</h3>
+
+                <div class="reportes-lista">
+
+                    <div class="reporte-card">
+
+                        <div>
+                            <h4>Reporte #01</h4>
+                            <p>Tipo: Contaminación</p>
+                        </div>
+
+                        <div>
+
+                            <label>Asignar a:</label>
+
+                            <select id="asignarUsuario">
+                                <option value="">Seleccione un usuario</option>
+                                <option value="user1">Usuario 1</option>
+                                <option value="user2">Usuario 2</option>
+                                <option value="user3">Usuario 3</option>
+                            </select>
+
+                            <button class="btn-guardar">Asignar</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="estado" class="tab-content">
+
+                <h3>Actualizar estado del reporte</h3>
+
+                <div class="input-group">
+                    <label>Seleccione reporte</label>
+                    <select>
+                        <option>Reporte #01</option>
+                        <option>Reporte #02</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Nuevo estado</label>
+                    <select>
+                        <option>Pendiente</option>
+                        <option>En proceso</option>
+                        <option>Resuelto</option>
+                    </select>
+                </div>
+
+                <button class="btn-guardar">Actualizar estado</button>
+
+            </div>
+
+            <div id="comentarios" class="tab-content">
+
+                <h3>Agregar comentario</h3>
+
+                <div class="input-group">
+                    <label>Seleccione reporte</label>
+                    <select>
+                        <option>Reporte #01</option>
+                        <option>Reporte #02</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Comentario</label>
+                    <textarea rows="4" placeholder="Escriba el comentario"></textarea>
+                </div>
+
+                <button class="btn-guardar">Guardar comentario</button>
+
+            </div>
+
+            <div id="cerrar" class="tab-content">
+
+                <h3>Cerrar caso</h3>
+
+                <div class="input-group">
+                    <label>Seleccione reporte</label>
+                    <select>
+                        <option>Reporte #01</option>
+                        <option>Reporte #02</option>
+                    </select>
+                </div>
+
+                <button class="btn-guardar">Cerrar caso</button>
+
+            </div>
+
+        </main>
+
+    </main>
+
+    <!-- Footer -> Reemplazado desde Fragmentos/footer.php -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h5>EcoAlerta CR</h5>
+                <p>Reportes ambientales para una Costa Rica más limpia y segura.</p>
+            </div>
+
+            <nav class="footer-links" aria-label="Enlaces del sitio">
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.php">Inicio</a>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php">Reportes</a>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.html">Bandeja Reportes</a>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.html">Panel Administracion</a>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php">Información</a>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.php">Contacto</a>
+            </nav>
+
+            <div class="footer-social">
+                <p class="footer-small">Síguenos</p>
+                <div class="social-row">
+                    <a href="#" aria-label="Facebook">Facebook</a>
+                    <a href="#" aria-label="Instagram">Instagram</a>
+                    <a href="#" aria-label="X">X</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            2026 <span>© <span id="year"></span> EcoAlerta CR. Todos los derechos reservados.</span>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
+    <script src="../JS/institucional.js"></script>
+
+</body>
+
+</html>

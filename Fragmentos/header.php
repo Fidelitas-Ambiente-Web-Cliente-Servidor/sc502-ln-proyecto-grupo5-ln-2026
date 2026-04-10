@@ -5,9 +5,11 @@
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.php">Inicio</a>
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php">Reportes</a>
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php">Información</a>
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.html">Bandeja Reportes</a>
         <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
             <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.php">Panel Administracion</a>
         <?php endif; ?>
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.html">Panel Admin</a>
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.php">Contacto</a>
     </nav>
     <div>
