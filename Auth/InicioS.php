@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($password)) {
         $errors[] = "Todos los campos son obligatorios";
     } else {
-        $stmt = $conn->prepare("SELECT id, nombre, contraseña, tipo FROM usuarios WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, nombre, contraseña, tipo, estado FROM usuarios WHERE email = ?");
         if (!$stmt) {
             $errors[] = "Error en la consulta: " . $conn->error;
         } else {
@@ -19,9 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->store_result();
 
             if ($stmt->num_rows === 1) {
-                $stmt->bind_result($id, $nombre, $hashed, $tipo);
+                $stmt->bind_result($id, $nombre, $hashed, $tipo, $estado);
                 $stmt->fetch();
-                if (password_verify($password, $hashed)) {
+
+                if ($estado !== 'activo') {
+                    $errors[] = "Tu cuenta está desactivada. Contacta al administrador.";
+                } elseif (password_verify($password, $hashed)) {
                     // Login exitoso
                     $_SESSION['user_id'] = $id;
                     $_SESSION['user_name'] = $nombre;
