@@ -6,10 +6,9 @@
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php">Reportes</a>
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php">Información</a>
         
-        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.html">Bandeja Reportes</a>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.php">Panel Administración</a>
-        <?php endif; ?>
+        <!-- Temporalmente visibles para desarrollo sin login -->
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.php">Bandeja Reportes</a>
+        <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.php">Panel Administración</a>
         
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.php">Contacto</a>
     </nav>

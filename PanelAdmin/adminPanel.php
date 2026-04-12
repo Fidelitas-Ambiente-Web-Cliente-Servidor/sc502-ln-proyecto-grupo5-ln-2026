@@ -1,4 +1,64 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+include '../conexion.php';
+
+// Obtener Usuarios
+$usuariosList = [];
+$res_usr = $conn->query("SELECT id, nombre, email as correo, tipo as rol, estado FROM usuarios ORDER BY id DESC");
+if($res_usr){
+    while($row = $res_usr->fetch_assoc()){
+        $row['rol'] = ($row['rol'] === 'admin') ? 'Administrador' : 'Usuario';
+        $row['estado'] = ucfirst($row['estado']); // Activo / Inactivo
+        $row['id'] = intval($row['id']);
+        $usuariosList[] = $row;
+    }
+}
+
+// Obtener Reportes
+$reportesList = [];
+$qy = "SELECT r.id, c.nombre as tipo, r.usuario_id, u.nombre as usuario, r.descripcion, r.gravedad, e.nombre as estadoOriginal, r.fecha_hora_incidente, r.latitud, r.longitud, r.direccion 
+       FROM reportes r
+       LEFT JOIN categorias c ON r.categoria_id = c.id
+       LEFT JOIN usuarios u ON r.usuario_id = u.id
+       LEFT JOIN estados e ON r.estado_id = e.id
+       ORDER BY r.id DESC";
+$res_rep = $conn->query($qy);
+if($res_rep){
+    while($row = $res_rep->fetch_assoc()){
+        $datetime = new DateTime($row['fecha_hora_incidente']);
+        $row['fecha'] = $datetime->format('d/m/Y');
+        $row['hora'] = $datetime->format('H:i');
+        
+        $estadoMap = [
+            'enviado' => 'Pendiente',
+            'en_revision' => 'Pendiente',
+            'asignado' => 'Pendiente',
+            'en_proceso' => 'En Proceso',
+            'resuelto' => 'Resuelto',
+            'cerrado' => 'Resuelto'
+        ];
+        $st = strtolower($row['estadoOriginal'] ?? 'enviado');
+        $row['estado'] = $estadoMap[$st] ?? 'Pendiente';
+        $row['ubicacion'] = $row['direccion'] ?: ($row['latitud'] . ', ' . $row['longitud']);
+        $row['id'] = intval($row['id']);
+        
+        // --- Mejoras Visuales para el Moderador ---
+        $row['usuario'] = $row['usuario'] ?: 'Anónimo';
+        $row['gravedad'] = ucfirst($row['gravedad']);
+        $row['tipo'] = ucfirst($row['tipo'] ?? 'General');
+        
+        // Evidencias (imágenes)
+        $row['imagenes'] = [];
+        $evQuery = $conn->query("SELECT url FROM evidencias WHERE reporte_id = {$row['id']}");
+        if($evQuery) {
+            while($ev = $evQuery->fetch_assoc()){
+                $row['imagenes'][] = $ev['url'];
+            }
+        }
+        $reportesList[] = $row;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -146,9 +206,13 @@
 
     <?php include '../Fragmentos/footer.php'; ?>
 
+    <script>
+        // Variables injectadas por PHP
+        window.usuariosIniciales = <?php echo json_encode($usuariosList); ?>;
+        window.reportesIniciales = <?php echo json_encode($reportesList); ?>;
+    </script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
-    <script src="../JS/Backend.js"></script>
-    <script src="../JS/adminPanel.js"></script>
+    <script src="../JS/adminPanel.js?v=<?php echo time(); ?>"></script>
 
 </body>
 

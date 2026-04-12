@@ -1,7 +1,11 @@
 Array
 (
+
     [user_id] => 1
     [user_name] => Bryan Carvajal Flores
     [user_email] => bryancarvajalflores@gmail.com
-    [user_type] => usuario
+    [user_id] => 2
+    [user_name] => Josue Barboza Arias
+    [user_email] => josue@ecoalerta.com
+    [user_type] => admin
 )

@@ -47,9 +47,35 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        alert("Reporte enviado correctamente");
-        formulario.reset();
-        preview.innerHTML = "";
+        // Recuperar datos sin alterar los IDs ni estructura original
+        let payload = {
+            accion: 'crear-reporte',
+            tipoProblema: document.getElementById('tipoProblema').value,
+            descripcion: document.getElementById('descripcion').value,
+            fecha: document.getElementById('fecha').value,
+            hora: document.getElementById('hora').value,
+            gravedad: document.getElementById('gravedad').value,
+            lat: ubicacionSeleccionada.lat,
+            lng: ubicacionSeleccionada.lng
+        };
+
+        // Enviar silenciosamente
+        fetch('../PanelAdmin/adminAcciones.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Reporte enviado correctamente y guardado en MySQL con ID: " + data.reporte_id);
+                formulario.reset();
+                preview.innerHTML = "";
+            } else {
+                alert("Hubo un problema: " + data.message);
+            }
+        })
+        .catch(err => console.error("Error enviando reporte:", err));
     });
 
 });

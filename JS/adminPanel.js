@@ -1,74 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
- //Datos precargados, simulacion de datos 
-
-    let usuarios = [
-        { id: 1, nombre: "Bryan Solano", correo: "bryan@ecoalerta.com", rol: "Usuario", estado: "Activo" },
-        { id: 2, nombre: "Ashlee Ramírez", correo: "ashlee@ecoalerta.com", rol: "Institución", estado: "Activo" },
-        { id: 3, nombre: "Jafet Mora", correo: "jafet@ecoalerta.com", rol: "Usuario", estado: "Bloqueado" },
-        { id: 4, nombre: "Josue Arias", correo: "josue@ecoalerta.com", rol: "Administrador", estado: "Activo" }
-    ];
-
-    let reportes = [
-        {
-            id: 101,
-            tipo: "Basura",
-            usuario: "Bryan Solano",
-            descripcion: "Se encontró acumulación de basura en un lote baldío cerca de una escuela.",
-            gravedad: "Media",
-            estado: "Pendiente",
-            fecha: "2026-03-05",
-            hora: "14:30",
-            ubicacion: "San José, Costa Rica",
-            imagenes: [
-                "https://via.placeholder.com/150?text=Reporte+1",
-                "https://via.placeholder.com/150?text=Reporte+1B"
-            ]
-        },
-        {
-            id: 102,
-            tipo: "Incendio Forestal",
-            usuario: "Jafet Mora",
-            descripcion: "Se reporta humo y fuego en una zona montañosa cercana a la comunidad.",
-            gravedad: "Alta",
-            estado: "En Proceso",
-            fecha: "2026-03-04",
-            hora: "09:15",
-            ubicacion: "Cartago, Costa Rica",
-            imagenes: [
-                "https://via.placeholder.com/150?text=Reporte+2"
-            ]
-        },
-        {
-            id: 103,
-            tipo: "Contaminación de agua",
-            usuario: "Ashlee Ramírez",
-            descripcion: "El río presenta coloración extraña y desechos flotando en la superficie.",
-            gravedad: "Alta",
-            estado: "Resuelto",
-            fecha: "2026-03-03",
-            hora: "11:00",
-            ubicacion: "Alajuela, Costa Rica",
-            imagenes: [
-                "https://via.placeholder.com/150?text=Reporte+3"
-            ]
-        },
-        {
-            id: 104,
-            tipo: "Tala ilegal",
-            usuario: "Bryan Solano",
-            descripcion: "Se observó tala de árboles sin autorización en una zona protegida.",
-            gravedad: "Crítica",
-            estado: "Pendiente",
-            fecha: "2026-03-02",
-            hora: "16:45",
-            ubicacion: "Limón, Costa Rica",
-            imagenes: [
-                "https://via.placeholder.com/150?text=Reporte+4"
-            ]
-        }
-    ];
-
+    let usuarios = window.usuariosIniciales || [];
+    let reportes = window.reportesIniciales || [];
     let ubicacionActualReporte = "";
 
    //Referencias DOM
@@ -240,34 +173,46 @@ document.addEventListener("DOMContentLoaded", function () {
         const id = Number(boton.dataset.id);
         const accion = boton.dataset.accion;
 
-        if (accion === "estado-usuario") {
-            usuarios = usuarios.map(usuario => {
-                if (usuario.id === id) {
-                    usuario.estado = usuario.estado === "Activo" ? "Bloqueado" : "Activo";
-                }
-                return usuario;
-            });
-        }
-
-        if (accion === "rol-usuario") {
-            usuarios = usuarios.map(usuario => {
-                if (usuario.id === id) {
-                    if (usuario.rol === "Usuario") usuario.rol = "Institución";
-                    else if (usuario.rol === "Institución") usuario.rol = "Administrador";
-                    else usuario.rol = "Usuario";
-                }
-                return usuario;
-            });
-        }
-
         if (accion === "eliminar-usuario") {
             const confirmar = confirm("¿Desea eliminar este usuario?");
             if (!confirmar) return;
-            usuarios = usuarios.filter(usuario => usuario.id !== id);
         }
 
-        renderUsuarios();
-        renderEstadisticas();
+        // Llamada a bd
+        fetch('adminAcciones.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accion: accion, id: id })
+        }).then(res => res.json()).then(data => {
+            if (data.success) {
+                if (accion === "estado-usuario") {
+                    usuarios = usuarios.map(usuario => {
+                        if (usuario.id === id) {
+                            usuario.estado = usuario.estado === "Activo" ? "Inactivo" : "Activo";
+                        }
+                        return usuario;
+                    });
+                }
+        
+                if (accion === "rol-usuario") {
+                    usuarios = usuarios.map(usuario => {
+                        if (usuario.id === id) {
+                            usuario.rol = usuario.rol === "Usuario" ? "Administrador" : "Usuario";
+                        }
+                        return usuario;
+                    });
+                }
+        
+                if (accion === "eliminar-usuario") {
+                    usuarios = usuarios.filter(usuario => usuario.id !== id);
+                }
+        
+                renderUsuarios();
+                renderEstadisticas();
+            } else {
+                alert("Error: " + data.message);
+            }
+        }).catch(err => console.error("Fetch Error:", err));
     });
 
     // Eventos reportes
@@ -288,25 +233,47 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        if (accion === "estado-reporte") {
-            reportes = reportes.map(reporte => {
-                if (reporte.id === id) {
-                    if (reporte.estado === "Pendiente") reporte.estado = "En Proceso";
-                    else if (reporte.estado === "En Proceso") reporte.estado = "Resuelto";
-                    else reporte.estado = "Pendiente";
-                }
-                return reporte;
-            });
-        }
-
         if (accion === "eliminar-reporte") {
             const confirmar = confirm("¿Desea eliminar este reporte?");
             if (!confirmar) return;
-            reportes = reportes.filter(r => r.id !== id);
         }
 
-        renderReportes();
-        renderEstadisticas();
+        let payload = { accion: accion, id: id };
+        
+        let nuevoEstado = "";
+        if (accion === "estado-reporte") {
+            let reporte = reportes.find(r => r.id === id);
+            if (reporte) {
+                if (reporte.estado === "Pendiente") nuevoEstado = "En Proceso";
+                else if (reporte.estado === "En Proceso") nuevoEstado = "Resuelto";
+                else nuevoEstado = "Pendiente";
+                payload.estado = nuevoEstado;
+            }
+        }
+
+        fetch('adminAcciones.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).then(res => res.json()).then(data => {
+            if (data.success) {
+                if (accion === "estado-reporte") {
+                    reportes = reportes.map(reporte => {
+                        if (reporte.id === id) reporte.estado = nuevoEstado;
+                        return reporte;
+                    });
+                }
+        
+                if (accion === "eliminar-reporte") {
+                    reportes = reportes.filter(r => r.id !== id);
+                }
+        
+                renderReportes();
+                renderEstadisticas();
+            } else {
+                alert("Error: " + data.message);
+            }
+        }).catch(err => console.error("Fetch Error:", err));
     });
 
 

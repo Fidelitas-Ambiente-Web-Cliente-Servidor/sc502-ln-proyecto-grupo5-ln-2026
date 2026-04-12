@@ -98,7 +98,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
-    <script src="../JS/reportes.js"></script>
+    <script src="../JS/reportes.js?v=<?php echo time(); ?>"></script>
 
 </body>
 </html>
