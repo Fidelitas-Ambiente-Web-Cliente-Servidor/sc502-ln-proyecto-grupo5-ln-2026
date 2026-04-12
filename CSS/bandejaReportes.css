@@ -1,0 +1,211 @@
+
+/* Contenedor principal */
+.reportes-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px 0;
+}
+
+/* Encabezado */
+.reportes-header {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.reportes-info h2 {
+    color: #1f7a4d;
+    margin-bottom: 5px;
+}
+
+/* Tabs (igual que admin-tabs) */
+.reportes-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.tab-link {
+    background-color: #d8efe0;
+    color: #1f7a4d;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.tab-link:hover {
+    background-color: #bfe3cc;
+}
+
+.tab-link.active {
+    background-color: #1f7a4d;
+    color: white;
+}
+
+/* Contenido de tabs */
+.tab-content {
+    display: none;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content h3 {
+    color: #1f7a4d;
+    margin-bottom: 20px;
+}
+
+/* Lista de reportes (cards) */
+.reportes-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.reporte-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.2s;
+}
+
+.reporte-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reporte-card h4 {
+    color: #1f7a4d;
+    margin-bottom: 8px;
+}
+
+.reporte-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Estado badge */
+.estado {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.estado.pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.estado.en-proceso {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.estado.resuelto {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Formularios y controles */
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1f7a4d;
+}
+
+.input-group select,
+.input-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.input-group select:focus,
+.input-group textarea:focus {
+    outline: none;
+    border-color: #1f7a4d;
+    box-shadow: 0 0 0 3px rgba(31, 122, 77, 0.1);
+}
+
+/* Botones */
+.btn-guardar {
+    background-color: #1f7a4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-guardar:hover {
+    background-color: #146c43;
+}
+
+/* Select específico dentro de reporte-card */
+.reporte-card select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .reportes-container {
+        width: 95%;
+    }
+
+    .reportes-tabs {
+        flex-direction: column;
+    }
+
+    .tab-link {
+        width: 100%;
+        text-align: center;
+    }
+
+    .reporte-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .reporte-card div:last-child {
+        width: 100%;
+    }
+
+    .reporte-card select,
+    .reporte-card button {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
