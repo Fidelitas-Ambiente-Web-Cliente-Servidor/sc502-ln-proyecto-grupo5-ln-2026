@@ -25,15 +25,16 @@
                     Plataforma para reportar incidentes ambientales y visualizar
                     reportes simulados en distintas zonas de Costa Rica.
                 </p>
-
-                <div class="hero-actions">
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
-                        Crear reporte
-                    </a>
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">
-                        Más información
-                    </a>
-                </div>
+                <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
+                    <div class="hero-actions">
+                        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
+                            Crear reporte
+                        </a>
+                        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">
+                            Más información
+                        </a>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
 
@@ -135,16 +136,18 @@
         </section>
 
         <!-- Llamado a la acción -->
-        <section class="cta-section">
-            <h2>¿Deseas colaborar con el ambiente?</h2>
-            <p>
-                Registra un nuevo reporte y ayuda a identificar problemas ambientales
-                en distintas comunidades del país.
-            </p>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
-                Reportar ahora
-            </a>
-        </section>
+        <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
+            <section class="cta-section">
+                <h2>¿Deseas colaborar con el ambiente?</h2>
+                <p>
+                    Registra un nuevo reporte y ayuda a identificar problemas ambientales
+                    en distintas comunidades del país.
+                </p>
+                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
+                    Reportar ahora
+                </a>
+            </section>
+        <?php endif; ?>
     </main>
 
     <?php include 'Fragmentos/footer.php'; ?>

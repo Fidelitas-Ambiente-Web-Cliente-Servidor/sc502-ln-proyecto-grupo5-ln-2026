@@ -167,6 +167,17 @@ try {
 
             $response = ['success' => true, 'reporte_id' => $reporte_id];
             break;
+        case 'marcar-leido-mensaje':
+            $id = intval($input['id']);
+            $conn->query("UPDATE mensajes SET leido = 1 WHERE id = $id");
+            $response = ['success' => true];
+            break;
+
+        case 'eliminar-mensaje':
+            $id = intval($input['id']);
+            $conn->query("UPDATE mensajes SET estado = 'inactivo' WHERE id = $id");
+            $response = ['success' => true];
+            break;
     }
 } catch (Exception $e) {
     $response = ['success' => false, 'message' => $e->getMessage()];

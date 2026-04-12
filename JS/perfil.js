@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 cargarReportes();
             } else if (tabId === 'seguimiento') {
                 cargarSeguimiento();
+            } else if (tabId === 'mensajes') {
+                cargarMensajes();
             }
         });
     });
@@ -45,6 +47,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cambiarAvatar) {
         cambiarAvatar.addEventListener('click', () => alert('Funcionalidad de cambio de avatar (próximamente)'));
     }
+
+    // Cerrar alertas automáticamente
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            alert.style.opacity = '0';
+            alert.style.transition = 'opacity 0.3s';
+            setTimeout(() => alert.remove(), 300);
+        }, 5000);
+    });
 });
 
 function cargarReportes() {
@@ -125,11 +137,57 @@ function renderSeguimiento(seguimiento) {
     });
 }
 
-const alerts = document.querySelectorAll('.alert');
-alerts.forEach(alert => {
-    setTimeout(() => {
-        alert.style.opacity = '0';
-        alert.style.transition = 'opacity 0.3s';
-        setTimeout(() => alert.remove(), 300);
-    }, 5000);
-});
+// ==================== NUEVAS FUNCIONES PARA MENSAJES ====================
+function cargarMensajes() {
+    fetch('get_mensajes_usuario.php')
+        .then(response => response.json())
+        .then(mensajes => renderMensajes(mensajes))
+        .catch(error => console.error('Error cargando mensajes:', error));
+}
+
+function renderMensajes(mensajes) {
+    const contenedor = document.getElementById('listaMensajes');
+    if (!contenedor) return;
+    contenedor.innerHTML = '';
+    if (mensajes.length === 0) {
+        contenedor.innerHTML = '<p class="sin-resultados">No has enviado ningún mensaje de contacto aún.</p>';
+        return;
+    }
+    mensajes.forEach(msg => {
+        const estadoTexto = msg.leido ? 'Leído por el equipo' : 'No leído aún';
+        const estadoClass = msg.leido ? 'leido' : 'no-leido';
+        const mensajeCorto = msg.mensaje.length > 150 ? msg.mensaje.substring(0, 150) + '…' : msg.mensaje;
+        const card = document.createElement('div');
+        card.className = 'reporte-card'; // reutilizamos estilo
+        card.innerHTML = `
+            <div>
+                <h4>${escapeHtml(msg.asunto)}</h4>
+                <p><strong>Fecha:</strong> ${msg.fecha_envio}</p>
+                <p><strong>Mensaje:</strong> ${escapeHtml(mensajeCorto)}</p>
+            </div>
+            <div>
+                <span class="estado-mensaje ${estadoClass}">${estadoTexto}</span>
+                ${msg.mensaje.length > 150 ? `<button class="btn-ver-mensaje" data-mensaje="${escapeHtml(msg.mensaje)}">Ver completo</button>` : ''}
+            </div>
+        `;
+        contenedor.appendChild(card);
+    });
+
+    // Evento para botones "Ver completo"
+    document.querySelectorAll('.btn-ver-mensaje').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const mensajeCompleto = btn.getAttribute('data-mensaje');
+            alert(`Mensaje completo:\n\n${mensajeCompleto}`);
+        });
+    });
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+    });
+}

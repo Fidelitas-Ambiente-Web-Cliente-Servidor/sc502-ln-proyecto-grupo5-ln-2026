@@ -1,16 +1,29 @@
 <?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
 <header class="site-header">
-    <h1>EcoAlerta CR</h1>
+    <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
+        <h1>EcoAlerta CR</h1>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
+        <div class = "logo">
+            <h1>EcoAlerta CR</h1>
+            <h3>Admin</h3>
+        </div>
+    <?php endif; ?>
     <nav>
         <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.php">Inicio</a>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php">Reportes</a>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php">Información</a>
+        <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php">Reportes</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php">Información</a>
+        <?php endif; ?>
         
-        <!-- Temporalmente visibles para desarrollo sin login -->
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.php">Bandeja Reportes</a>
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.php">Panel Administración</a>
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.php">Bandeja Reportes</a>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.php">Panel Administración</a>
+        <?php endif; ?>
         
-        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.php">Contacto</a>
+        <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Contacto/vistaContacto.php">Contacto</a>
+        <?php endif; ?>
     </nav>
     <div>
         <form id="formularioBusqueda" action="?" method="get">
@@ -31,7 +44,9 @@
                     <span class="dropdown-arrow">▼</span>
                 </div>
                 <ul class="dropdown-menu">
-                    <li><a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/perfiles.php">Mi perfil</a></li>
+                    <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'usuario'): ?>
+                        <li><a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/perfiles.php">Mi perfil</a></li>
+                    <?php endif; ?>
                     <li><a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/logout.php">Cerrar sesión</a></li>
                 </ul>
             </div>

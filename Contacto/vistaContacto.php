@@ -5,6 +5,10 @@ error_reporting(E_ALL);
 
 include '../conexion.php';
 
+// Obtener datos del usuario logueado (si existe)
+$user_nombre = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : '';
+$user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '';
+
 $mensajeExito = '';
 $mensajeError = '';
 
@@ -18,6 +22,7 @@ if (!$conn) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$mensajeError) {
+    // Si el usuario envía el formulario, permitimos que pueda modificar los datos (no forzamos los de sesión)
     $nombre  = trim($_POST['nombre']  ?? '');
     $correo  = trim($_POST['correo']  ?? '');
     $asunto  = trim($_POST['asunto']  ?? '');
@@ -35,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$mensajeError) {
             $stmt->bind_param("ssss", $nombre, $correo, $asunto, $mensaje);
             if ($stmt->execute()) {
                 $mensajeExito = '¡Mensaje enviado correctamente! Nos pondremos en contacto pronto.';
-                $_POST = [];
+                $_POST = []; // Limpiar POST después del éxito
             } else {
                 $mensajeError = 'Error al guardar: ' . $stmt->error;
             }
@@ -73,19 +78,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$mensajeError) {
             <form class="contacto-form" method="POST" action="">
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
+                    <input type="text" id="nombre" name="nombre" 
+                           placeholder="Ingrese su nombre" 
+                           value="<?= htmlspecialchars($_POST['nombre'] ?? $user_nombre) ?>">
                 </div>
                 <div class="form-group">
                     <label for="correo">Correo electrónico</label>
-                    <input type="email" id="correo" name="correo" placeholder="correo@ejemplo.com" value="<?= htmlspecialchars($_POST['correo'] ?? '') ?>">
+                    <input type="email" id="correo" name="correo" 
+                           placeholder="correo@ejemplo.com" 
+                           value="<?= htmlspecialchars($_POST['correo'] ?? $user_email) ?>">
                 </div>
                 <div class="form-group">
                     <label for="asunto">Asunto</label>
-                    <input type="text" id="asunto" name="asunto" placeholder="Motivo del mensaje" value="<?= htmlspecialchars($_POST['asunto'] ?? '') ?>">
+                    <input type="text" id="asunto" name="asunto" 
+                           placeholder="Motivo del mensaje" 
+                           value="<?= htmlspecialchars($_POST['asunto'] ?? '') ?>">
                 </div>
                 <div class="form-group">
                     <label for="mensaje">Mensaje</label>
-                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escriba su mensaje aquí"><?= htmlspecialchars($_POST['mensaje'] ?? '') ?></textarea>
+                    <textarea id="mensaje" name="mensaje" rows="5" 
+                              placeholder="Escriba su mensaje aquí"><?= htmlspecialchars($_POST['mensaje'] ?? '') ?></textarea>
                 </div>
                 <button type="submit" class="btn-principal">Enviar mensaje</button>
             </form>

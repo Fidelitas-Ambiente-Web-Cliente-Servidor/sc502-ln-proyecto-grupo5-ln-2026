@@ -484,6 +484,36 @@
     backdrop-filter: blur(10px);
 }
 
+/* Estilos para mensajes */
+.estado-mensaje {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.estado-mensaje.leido {
+    background-color: #d4edda;
+    color: #155724;
+}
+.estado-mensaje.no-leido {
+    background-color: #fff3cd;
+    color: #856404;
+}
+.btn-ver-mensaje {
+    background-color: #6c63ff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 0.75rem;
+}
+.btn-ver-mensaje:hover {
+    background-color: #574fd6;
+}
+
 @keyframes slideIn {
     from {
         opacity: 0;

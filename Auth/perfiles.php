@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../conexion.php'; // Ruta corregida
+require_once '../conexion.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: InicioS.php");
@@ -12,7 +12,6 @@ $userType = $_SESSION['user_type'];
 $userName = $_SESSION['user_name'];
 $userEmail = $_SESSION['user_email'];
 
-// Incluir teléfono en la consulta
 $stmt = $conn->prepare("SELECT nombre, email, telefono, fecha_registro FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
@@ -163,6 +162,7 @@ if (isset($_GET['logout'])) {
             <button class="tab-link active" data-tab="datos">Mis Datos</button>
             <button class="tab-link" data-tab="reportes">Mis Reportes</button>
             <button class="tab-link" data-tab="seguimiento">Seguimiento</button>
+            <button class="tab-link" data-tab="mensajes">Mis Mensajes</button>   <!-- NUEVO -->
             <button class="tab-link" data-tab="password">Cambiar Contraseña</button>
         </div>
 
@@ -205,6 +205,12 @@ if (isset($_GET['logout'])) {
         <div id="seguimiento" class="tab-content">
             <h3>Seguimiento y bitácora</h3>
             <div class="timeline" id="timeline"></div>
+        </div>
+
+        <!-- NUEVA SECCIÓN: Mensajes enviados -->
+        <div id="mensajes" class="tab-content">
+            <h3>Mis mensajes de contacto</h3>
+            <div class="mensajes-lista" id="listaMensajes"></div>
         </div>
 
         <div id="password" class="tab-content">

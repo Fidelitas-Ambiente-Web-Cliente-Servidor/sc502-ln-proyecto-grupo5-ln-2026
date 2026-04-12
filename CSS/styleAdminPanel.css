@@ -222,6 +222,22 @@
     border: 1px solid #ddd;
 }
 
+.estado-mensaje {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.estado-mensaje.leido {
+    background-color: #d4edda;
+    color: #155724;
+}
+.estado-mensaje.no-leido {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
 @media (max-width: 768px) {
     .admin-main {
         width: 95%;

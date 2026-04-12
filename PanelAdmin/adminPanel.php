@@ -58,6 +58,18 @@ if($res_rep){
         $reportesList[] = $row;
     }
 }
+
+// Obtener Mensajes (contacto)
+$mensajesList = [];
+$res_msg = $conn->query("SELECT id, nombre, correo, asunto, mensaje, leido, estado, fecha_envio FROM mensajes WHERE estado = 'activo' ORDER BY fecha_envio DESC");
+if($res_msg){
+    while($row = $res_msg->fetch_assoc()){
+        $row['id'] = intval($row['id']);
+        $row['leido'] = (bool)$row['leido'];
+        $row['fecha_envio'] = date('d/m/Y H:i', strtotime($row['fecha_envio']));
+        $mensajesList[] = $row;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -127,6 +139,9 @@ if($res_rep){
             <button class="tab-btn" data-tab="reportes">
                 Moderación de Reportes
             </button>
+            <button class="tab-btn" data-tab="mensajes">
+                Mensajes de Contacto
+            </button>
 
             <button class="tab-btn" data-tab="estadisticas">
                 Estadísticas
@@ -175,29 +190,49 @@ if($res_rep){
             </table>
         </section>
 
-        <!-- Seccion estadisticas -->
+        <!-- Sección Mensajes -->
+        <section id="mensajes" class="tab-content">
+            <h3>Mensajes recibidos</h3>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Asunto</th>
+                        <th>Mensaje</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaMensajes"></tbody>
+            </table>
+        </section>
+
+        <!-- Sección estadísticas -->
         <section id="estadisticas" class="tab-content">
             <h3>Estadísticas del Sistema</h3>
-
             <div class="stats-container">
                 <div class="stat-card">
                     <h4>Total Usuarios</h4>
                     <p id="totalUsuarios">0</p>
                 </div>
-
                 <div class="stat-card">
                     <h4>Total Reportes</h4>
                     <p id="totalReportes">0</p>
                 </div>
-
                 <div class="stat-card">
                     <h4>Reportes Pendientes</h4>
                     <p id="totalPendientes">0</p>
                 </div>
-
                 <div class="stat-card">
                     <h4>Reportes Resueltos</h4>
                     <p id="totalResueltos">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Mensajes No Leídos</h4>
+                    <p id="totalNoLeidos">0</p>
                 </div>
             </div>
         </section>
@@ -207,13 +242,12 @@ if($res_rep){
     <?php include '../Fragmentos/footer.php'; ?>
 
     <script>
-        // Variables injectadas por PHP
         window.usuariosIniciales = <?php echo json_encode($usuariosList); ?>;
         window.reportesIniciales = <?php echo json_encode($reportesList); ?>;
+        window.mensajesIniciales = <?php echo json_encode($mensajesList); ?>;
     </script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="../JS/adminPanel.js?v=<?php echo time(); ?>"></script>
 
 </body>
-
 </html>
