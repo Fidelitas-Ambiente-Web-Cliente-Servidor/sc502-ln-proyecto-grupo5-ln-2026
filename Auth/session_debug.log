@@ -1,7 +1,7 @@
 Array
 (
-    [user_id] => 3
-    [user_name] => bryancarvajalflores
-    [user_email] => admin@kvestetica.com
+    [user_id] => 1
+    [user_name] => Bryan Carvajal Flores
+    [user_email] => bryancarvajalflores@gmail.com
     [user_type] => usuario
 )
