@@ -29,6 +29,15 @@
   letter-spacing: -0.5px;
 }
 
+.site-header h3 {
+  padding-top: 10px;
+  color: var(--green-dark);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
 .site-header nav {
   display: flex;
   gap: 1.5rem;
