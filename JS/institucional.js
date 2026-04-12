@@ -16,17 +16,40 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const botonesDetalle = document.querySelectorAll(".ver-detalle");
+    const modalBandeja = document.getElementById("modalDetalleBandeja");
+    const cerrarModalBandeja = document.getElementById("cerrarModalBandeja");
+
+    if (cerrarModalBandeja) {
+        cerrarModalBandeja.addEventListener("click", () => {
+            modalBandeja.style.display = "none";
+        });
+    }
+
     botonesDetalle.forEach(function (boton) {
         boton.addEventListener("click", function (e) {
             e.preventDefault();
             let card = boton.closest(".reporte-card");
-            let id = card.dataset.id;
-            let tipo = card.dataset.tipo;
-            let fecha = card.dataset.fecha;
-            let desc = card.dataset.desc;
-            let grav = card.dataset.gravedad;
+            
+            document.getElementById("modalTitulo").textContent = "Reporte #" + card.dataset.id;
+            document.getElementById("modalTipo").textContent = card.dataset.tipo;
+            document.getElementById("modalFecha").textContent = card.dataset.fecha;
+            document.getElementById("modalGravedad").textContent = card.dataset.gravedad.toUpperCase();
+            document.getElementById("modalDesc").textContent = card.dataset.desc;
 
-            alert(`--- Reporte #${id} ---\nTipo: ${tipo}\nFecha: ${fecha}\nGravedad: ${grav.toUpperCase()}\n\nDescripción:\n${desc}`);
+            let fotoUrl = card.dataset.foto;
+            let imgEl = document.getElementById("modalImagen");
+            let pNoImg = document.getElementById("modalNoImagen");
+
+            if (fotoUrl && fotoUrl.trim() !== '') {
+                imgEl.src = fotoUrl;
+                imgEl.style.display = "block";
+                pNoImg.style.display = "none";
+            } else {
+                imgEl.style.display = "none";
+                pNoImg.style.display = "block";
+            }
+
+            modalBandeja.style.display = "flex";
         });
     });
 

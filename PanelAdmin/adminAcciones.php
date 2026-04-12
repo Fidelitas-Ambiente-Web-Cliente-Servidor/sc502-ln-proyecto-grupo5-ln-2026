@@ -103,13 +103,13 @@ try {
             break;
 
         case 'crear-reporte':
-            $tipoProblema = $conn->real_escape_string($input['tipoProblema'] ?? 'otro');
-            $descripcion = $conn->real_escape_string($input['descripcion'] ?? '');
-            $fecha = $conn->real_escape_string($input['fecha'] ?? '');
-            $hora = $conn->real_escape_string($input['hora'] ?? '');
-            $gravedad = $conn->real_escape_string($input['gravedad'] ?? 'media');
-            $lat = floatval($input['lat'] ?? 0);
-            $lng = floatval($input['lng'] ?? 0);
+            $tipoProblema = $conn->real_escape_string($input['tipoProblema'] ?? $_POST['tipoProblema'] ?? 'otro');
+            $descripcion = $conn->real_escape_string($input['descripcion'] ?? $_POST['descripcion'] ?? '');
+            $fecha = $conn->real_escape_string($input['fecha'] ?? $_POST['fecha'] ?? '');
+            $hora = $conn->real_escape_string($input['hora'] ?? $_POST['hora'] ?? '');
+            $gravedad = $conn->real_escape_string($input['gravedad'] ?? $_POST['gravedad'] ?? 'media');
+            $lat = floatval($input['lat'] ?? $_POST['lat'] ?? 0);
+            $lng = floatval($input['lng'] ?? $_POST['lng'] ?? 0);
 
             // Usuario por defecto si no hay sesion
             $usuario_id = $_SESSION['usuario_id'] ?? 1;
@@ -141,7 +141,31 @@ try {
             if (!$res) {
                 throw new Exception("Error al guardar reporte en SQL: " . $conn->error);
             }
-            $response = ['success' => true, 'reporte_id' => $conn->insert_id];
+            $reporte_id = $conn->insert_id;
+
+            // Procesado de imágenes adjuntas
+            if (!empty($_FILES['imagenes']['name'][0])) {
+                $uploadDir = '../img/uploads/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                foreach ($_FILES['imagenes']['name'] as $key => $name) {
+                    if ($_FILES['imagenes']['error'][$key] == 0) {
+                        $ext = pathinfo($name, PATHINFO_EXTENSION);
+                        // Limpieza de extensión
+                        $ext = strtolower($ext) ?: 'png';
+                        $newName = "rep_" . $reporte_id . "_" . time() . "_" . $key . "." . $ext;
+                        $target = $uploadDir . $newName;
+                        if (move_uploaded_file($_FILES['imagenes']['tmp_name'][$key], $target)) {
+                            // Guardamos URL relativa al host
+                            $urlPath = '/sc502-ln-proyecto-grupo5-ln-2026/img/uploads/' . $newName;
+                            $conn->query("INSERT INTO evidencias (reporte_id, url) VALUES ($reporte_id, '$urlPath')");
+                        }
+                    }
+                }
+            }
+
+            $response = ['success' => true, 'reporte_id' => $reporte_id];
             break;
     }
 } catch (Exception $e) {

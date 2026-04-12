@@ -47,23 +47,28 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Recuperar datos sin alterar los IDs ni estructura original
-        let payload = {
-            accion: 'crear-reporte',
-            tipoProblema: document.getElementById('tipoProblema').value,
-            descripcion: document.getElementById('descripcion').value,
-            fecha: document.getElementById('fecha').value,
-            hora: document.getElementById('hora').value,
-            gravedad: document.getElementById('gravedad').value,
-            lat: ubicacionSeleccionada.lat,
-            lng: ubicacionSeleccionada.lng
-        };
+        // Armar usando FormData para soportar imágenes
+        let formData = new FormData();
+        formData.append('accion', 'crear-reporte');
+        formData.append('tipoProblema', document.getElementById('tipoProblema').value);
+        formData.append('descripcion', document.getElementById('descripcion').value);
+        formData.append('fecha', document.getElementById('fecha').value);
+        formData.append('hora', document.getElementById('hora').value);
+        formData.append('gravedad', document.getElementById('gravedad').value);
+        formData.append('lat', ubicacionSeleccionada.lat);
+        formData.append('lng', ubicacionSeleccionada.lng);
+
+        let inputImg = document.getElementById("imagenes");
+        if (inputImg.files.length > 0) {
+            for (let i = 0; i < inputImg.files.length; i++) {
+                formData.append('imagenes[]', inputImg.files[i]);
+            }
+        }
 
         // Enviar silenciosamente
         fetch('../PanelAdmin/adminAcciones.php', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: formData
         })
         .then(res => res.json())
         .then(data => {
