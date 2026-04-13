@@ -44,7 +44,7 @@ if ($resultResueltos) $resueltos = $resultResueltos->fetch_assoc()['total'];
                 </p>
                 <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
                 <div class="hero-actions">
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
+                    <a href="http://localhost:8080/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php" class="btn-principal">
                         Crear reporte
                     </a>
                     <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">
@@ -164,7 +164,7 @@ if ($resultResueltos) $resueltos = $resultResueltos->fetch_assoc()['total'];
                 Registra un nuevo reporte y ayuda a identificar problemas ambientales
                 en distintas comunidades del país.
             </p>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
+            <a href="http://localhost:8080/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php" class="btn-principal">
                 Reportar ahora
             </a>
         </section>

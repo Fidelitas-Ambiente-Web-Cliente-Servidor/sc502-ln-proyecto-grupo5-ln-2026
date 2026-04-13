@@ -26,7 +26,7 @@
                 + Nuevo reporte
             </a>
         <?php else: ?>
-            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Index.php" class="btn-nuevo-reporte">
+            <a href="http://localhost:8080/sc502-ln-proyecto-grupo5-ln-2026/Auth/InicioS.php" class="btn-nuevo-reporte">
                 Iniciar sesión para crear reporte
             </a>
         <?php endif; ?>
