@@ -1,4 +1,21 @@
-<?php session_start(); ?>
+<?php 
+session_start();
+require_once 'conexion.php'; // Asegurar que la conexión está disponible
+
+// Consultar estadísticas
+$totalReportes = 0;
+$enProceso = 0;
+$resueltos = 0;
+
+$resultTotal = $conn->query("SELECT COUNT(*) as total FROM reportes");
+if ($resultTotal) $totalReportes = $resultTotal->fetch_assoc()['total'];
+
+$resultProceso = $conn->query("SELECT COUNT(*) as total FROM reportes r JOIN estados e ON r.estado_id = e.id WHERE e.nombre IN ('en_proceso')");
+if ($resultProceso) $enProceso = $resultProceso->fetch_assoc()['total'];
+
+$resultResueltos = $conn->query("SELECT COUNT(*) as total FROM reportes r JOIN estados e ON r.estado_id = e.id WHERE e.nombre IN ('resuelto', 'cerrado')");
+if ($resultResueltos) $resueltos = $resultResueltos->fetch_assoc()['total'];
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -38,22 +55,22 @@
             </div>
         </section>
 
-        <!-- Resumen -->
+        <!-- Resumen / Estadísticas reales -->
         <section class="stats-section">
             <div class="stat-card">
-                <h3>...</h3>
+                <h3><?php echo $totalReportes; ?></h3>
                 <p>Reportes registrados</p>
             </div>
             <div class="stat-card">
-                <h3>...</h3>
+                <h3><?php echo $enProceso; ?></h3>
                 <p>En proceso</p>
             </div>
             <div class="stat-card">
-                <h3>...</h3>
+                <h3><?php echo $resueltos; ?></h3>
                 <p>Resueltos</p>
             </div>
             <div class="stat-card">
-                <h3>...</h3>
+                <h3>7</h3>
                 <p>Zonas monitoreadas</p>
             </div>
         </section>
@@ -81,7 +98,7 @@
                     <select id="filtroEstado">
                         <option value="todos">Estados</option>
                         <option value="pendiente">Pendiente</option>
-                        <option value="proceso">En proceso</option>
+                        <option value="en proceso">En proceso</option>
                         <option value="resuelto">Resuelto</option>
                     </select>
                 </div>
@@ -90,7 +107,7 @@
             <div id="mapaReportes" class="mapa-principal"></div>
         </section>
 
-        <!-- Reportes recientes -->
+        <!-- Reportes recientes desde la BD -->
         <section class="recent-section">
             <div class="section-header">
                 <div>
@@ -100,35 +117,42 @@
             </div>
 
             <div class="report-list">
-                <article class="report-card">
-                    <h3>Contaminación de río</h3>
-                    <p><strong>Ubicación:</strong> Heredia, Costa Rica</p>
-                    <p><strong>Estado:</strong> Pendiente</p>
-                    <p>
-                        Se reporta presencia de residuos sólidos y posible contaminación
-                        del agua en una quebrada cercana.
-                    </p>
-                </article>
-
-                <article class="report-card">
-                    <h3>Tala ilegal</h3>
-                    <p><strong>Ubicación:</strong> Alajuela, Costa Rica</p>
-                    <p><strong>Estado:</strong> En proceso</p>
-                    <p>
-                        Se detectó la tala de varios árboles en una zona protegida
-                        sin autorización visible.
-                    </p>
-                </article>
-
-                <article class="report-card">
-                    <h3>Quema de residuos</h3>
-                    <p><strong>Ubicación:</strong> San José, Costa Rica</p>
-                    <p><strong>Estado:</strong> Resuelto</p>
-                    <p>
-                        Vecinos reportaron humo constante por la quema de basura
-                        en un lote baldío.
-                    </p>
-                </article>
+                <?php
+                $recientes = $conn->query("
+                    SELECT r.id, r.descripcion, r.fecha_hora_incidente, e.nombre as estado_nombre, c.nombre as tipo_nombre
+                    FROM reportes r
+                    LEFT JOIN categorias c ON r.categoria_id = c.id
+                    LEFT JOIN estados e ON r.estado_id = e.id
+                    ORDER BY r.fecha_hora_incidente DESC
+                    LIMIT 3
+                ");
+                if ($recientes && $recientes->num_rows > 0):
+                    while ($row = $recientes->fetch_assoc()):
+                        $estadoMap = [
+                            'enviado' => 'Pendiente',
+                            'en_revision' => 'Pendiente',
+                            'asignado' => 'Pendiente',
+                            'en_proceso' => 'En proceso',
+                            'resuelto' => 'Resuelto',
+                            'cerrado' => 'Resuelto'
+                        ];
+                        $estado = $estadoMap[strtolower($row['estado_nombre'] ?? 'enviado')] ?? 'Pendiente';
+                        $fecha = date('d/m/Y', strtotime($row['fecha_hora_incidente']));
+                        $tipo = ucfirst($row['tipo_nombre'] ?? 'General');
+                ?>
+                    <article class="report-card">
+                        <h3><?php echo htmlspecialchars($tipo); ?></h3>
+                        <p><strong>Fecha:</strong> <?php echo $fecha; ?></p>
+                        <p><strong>Estado:</strong> <?php echo $estado; ?></p>
+                        <p><?php echo htmlspecialchars(substr($row['descripcion'], 0, 120)) . '…'; ?></p>
+                        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/detalle.php?id=<?php echo $row['id']; ?>" class="ver-mas">Ver más →</a>
+                    </article>
+                <?php 
+                    endwhile;
+                else:
+                    echo '<p>No hay reportes disponibles.</p>';
+                endif;
+                ?>
             </div>
         </section>
 
@@ -153,5 +177,4 @@
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/mapaIndex.js"></script>
 </body>
-
 </html>

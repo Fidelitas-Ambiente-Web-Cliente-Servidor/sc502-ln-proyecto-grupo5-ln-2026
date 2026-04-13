@@ -1,94 +1,95 @@
-// mapaIndex.js - Mapa interactivo con filtros
+// mapaIndex.js - Mapa interactivo con datos reales
+
+let map;
+let markers = [];
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar que el contenedor exista
     const mapContainer = document.getElementById('mapaReportes');
     if (!mapContainer) return;
 
-    // Inicializar el mapa centrado en Costa Rica
-    const map = L.map('mapaReportes').setView([9.7489, -83.7534], 8);
-
-    // Capa de OpenStreetMap
+    // Inicializar mapa centrado en Costa Rica
+    map = L.map('mapaReportes').setView([9.7489, -83.7534], 8);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Marcadores de ejemplo (simulando reportes)
-    const reportes = [
-        { id: 1, coords: [9.9348, -84.0875], tipo: 'contaminacion', estado: 'pendiente', nombre: 'Contaminación de río' },
-        { id: 2, coords: [10.0, -84.2], tipo: 'tala', estado: 'proceso', nombre: 'Tala ilegal' },
-        { id: 3, coords: [9.98, -83.03], tipo: 'quema', estado: 'resuelto', nombre: 'Quema de residuos' },
-        { id: 4, coords: [10.15, -85.45], tipo: 'agua', estado: 'pendiente', nombre: 'Contaminación de agua' },
-        { id: 5, coords: [9.37, -83.7], tipo: 'fauna', estado: 'proceso', nombre: 'Daño a fauna' },
-        { id: 6, coords: [10.45, -84.65], tipo: 'contaminacion', estado: 'resuelto', nombre: 'Derrame químico' },
-        { id: 7, coords: [9.75, -84.95], tipo: 'tala', estado: 'pendiente', nombre: 'Tala en reserva' }
-    ];
+    // Cargar reportes desde el endpoint
+    cargarReportes();
 
-    // Almacenar los marcadores para poder filtrarlos
-    const markers = [];
+    // Configurar filtros
+    const filtroTipo = document.getElementById('filtroTipo');
+    const filtroEstado = document.getElementById('filtroEstado');
+    if (filtroTipo) filtroTipo.addEventListener('change', aplicarFiltros);
+    if (filtroEstado) filtroEstado.addEventListener('change', aplicarFiltros);
 
-    // Función para determinar color según estado
-    function getColor(estado) {
-        switch (estado) {
-            case 'pendiente': return '#f44336'; // rojo
-            case 'proceso': return '#ff9800';    // naranja
-            case 'resuelto': return '#4caf50';   // verde
-            default: return '#2196f3';            // azul
-        }
-    }
+    // Ajustar tamaño del mapa después de cargar elementos del header
+    setTimeout(() => map.invalidateSize(), 200);
+});
 
-    // Crear los marcadores
+function cargarReportes() {
+    fetch('/sc502-ln-proyecto-grupo5-ln-2026/api/reportes.php')
+        .then(response => response.json())
+        .then(data => {
+            window.reportesData = data; // guardar globalmente para filtros
+            renderizarMarcadores(data);
+        })
+        .catch(error => console.error('Error cargando reportes:', error));
+}
+
+function renderizarMarcadores(reportes) {
+    // Limpiar marcadores existentes
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+
     reportes.forEach(r => {
-        const marker = L.circleMarker(r.coords, {
+        const color = getColor(r.estado);
+        const marker = L.circleMarker([r.lat, r.lng], {
             radius: 10,
-            fillColor: getColor(r.estado),
+            fillColor: color,
             color: '#333',
             weight: 2,
             opacity: 1,
             fillOpacity: 0.8
-        }).addTo(map)
-          .bindPopup(`
-              <b>${r.nombre}</b><br>
-              Tipo: ${r.tipo}<br>
-              Estado: <span style="color:${getColor(r.estado)}; font-weight:bold;">${r.estado}</span>
-          `);
-        
-        // Guardar el marcador junto con sus propiedades para filtrar
+        }).addTo(map);
+
+        marker.bindPopup(`
+            <b>Reporte #${r.id}</b><br>
+            <b>Tipo:</b> ${r.tipo}<br>
+            <b>Estado:</b> <span style="color:${color};">${r.estado}</span><br>
+            <b>Fecha:</b> ${r.fecha}<br>
+            <p>${r.descripcion.substring(0, 100)}${r.descripcion.length > 100 ? '…' : ''}</p>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/detalle.php?id=${r.id}" target="_blank">Ver detalle</a>
+        `);
+
         markers.push({
             marker: marker,
             tipo: r.tipo,
             estado: r.estado
         });
     });
+}
 
-    // Referencias a los selects
-    const filtroTipo = document.getElementById('filtroTipo');
-    const filtroEstado = document.getElementById('filtroEstado');
-
-    // Función para aplicar filtros
-    function aplicarFiltros() {
-        const tipoSeleccionado = filtroTipo.value;
-        const estadoSeleccionado = filtroEstado.value;
-
-        markers.forEach(item => {
-            const coincideTipo = (tipoSeleccionado === 'todos') || (item.tipo === tipoSeleccionado);
-            const coincideEstado = (estadoSeleccionado === 'todos') || (item.estado === estadoSeleccionado);
-
-            if (coincideTipo && coincideEstado) {
-                item.marker.addTo(map); // asegurar que está en el mapa
-                // Podríamos también cambiar opacidad o estilo, pero con add/remove es suficiente
-            } else {
-                map.removeLayer(item.marker);
-            }
-        });
+function getColor(estado) {
+    switch (estado.toLowerCase()) {
+        case 'pendiente': return '#f44336';
+        case 'en proceso': return '#ff9800';
+        case 'resuelto': return '#4caf50';
+        default: return '#2196f3';
     }
+}
 
-    // Escuchar cambios en los selects
-    filtroTipo.addEventListener('change', aplicarFiltros);
-    filtroEstado.addEventListener('change', aplicarFiltros);
+function aplicarFiltros() {
+    const tipoSeleccionado = document.getElementById('filtroTipo').value;
+    const estadoSeleccionado = document.getElementById('filtroEstado').value;
 
-    // Ajustar tamaño del mapa después de cargar el header (por si hay problemas)
-    setTimeout(() => map.invalidateSize(), 200);
+    markers.forEach(item => {
+        const coincideTipo = (tipoSeleccionado === 'todos') || (item.tipo.toLowerCase() === tipoSeleccionado);
+        const coincideEstado = (estadoSeleccionado === 'todos') || (item.estado.toLowerCase() === estadoSeleccionado);
 
-    // Opcional: botón para limpiar filtros (si quieres agregar uno)
-});
+        if (coincideTipo && coincideEstado) {
+            item.marker.addTo(map);
+        } else {
+            map.removeLayer(item.marker);
+        }
+    });
+}
