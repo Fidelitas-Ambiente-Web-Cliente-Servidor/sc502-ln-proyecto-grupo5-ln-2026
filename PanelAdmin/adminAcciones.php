@@ -37,10 +37,14 @@ try {
             // Buscamos el ID del estado con base al nombre "similar" para simplificar o buscar por equivalencia
             // Para mantener simpleza, si la vista manda 'Pendiente', lo pasamos a un estado de la DB
             $estadoDB = '';
-            if ($estadoStr === 'En Proceso') $estadoDB = 'en_proceso';
-            elseif ($estadoStr === 'Resuelto') $estadoDB = 'resuelto';
-            elseif ($estadoStr === 'Pendiente') $estadoDB = 'en_revision';
-            else $estadoDB = strtolower(str_replace(' ', '_', $estadoStr)); // fallback
+            if ($estadoStr === 'En Proceso')
+                $estadoDB = 'en_proceso';
+            elseif ($estadoStr === 'Resuelto')
+                $estadoDB = 'resuelto';
+            elseif ($estadoStr === 'Pendiente')
+                $estadoDB = 'en_revision';
+            else
+                $estadoDB = strtolower(str_replace(' ', '_', $estadoStr)); // fallback
 
             $qEstado = $conn->query("SELECT id FROM estados WHERE nombre = '$estadoDB' LIMIT 1");
             if ($qEstado && $qEstado->num_rows > 0) {
@@ -56,7 +60,7 @@ try {
         case 'eliminar-reporte':
             $id = intval($input['id']);
             $conn->query("DELETE FROM evidencias WHERE reporte_id = $id"); // por precaución
-            $conn->query("DELETE FROM seguimiento_estados WHERE reporte_id = $id"); 
+            $conn->query("DELETE FROM seguimiento_estados WHERE reporte_id = $id");
             $conn->query("DELETE FROM reportes WHERE id = $id");
             $response = ['success' => true];
             break;
@@ -73,9 +77,9 @@ try {
         case 'agregar-comentario':
             $id = intval($input['id_reporte']);
             $texto = $conn->real_escape_string($input['texto']);
-            
+
             // Asumiendo que tenemos un usuario logueado en la sesion
-            $idUsuarioActual = $_SESSION['usuario_id'] ?? 1; // dummy si no hay sesion
+            $idUsuarioActual = $_SESSION['user_id'] ?? 1; // dummy si no hay sesion
 
             // Agregamos seguimiento
             // Buscamos el estado actual
@@ -86,10 +90,10 @@ try {
                           VALUES ($id, $est_id, $idUsuarioActual, '$texto')");
             $response = ['success' => true];
             break;
-            
+
         case 'cerrar-caso':
             $id = intval($input['id_reporte']);
-            
+
             $qEstado = $conn->query("SELECT id FROM estados WHERE nombre = 'cerrado' LIMIT 1");
             if ($qEstado && $qEstado->num_rows > 0) {
                 $eid = $qEstado->fetch_assoc()['id'];
@@ -103,69 +107,67 @@ try {
             break;
 
         case 'crear-reporte':
-            $tipoProblema = $conn->real_escape_string($input['tipoProblema'] ?? $_POST['tipoProblema'] ?? 'otro');
-            $descripcion = $conn->real_escape_string($input['descripcion'] ?? $_POST['descripcion'] ?? '');
-            $fecha = $conn->real_escape_string($input['fecha'] ?? $_POST['fecha'] ?? '');
-            $hora = $conn->real_escape_string($input['hora'] ?? $_POST['hora'] ?? '');
-            $gravedad = $conn->real_escape_string($input['gravedad'] ?? $_POST['gravedad'] ?? 'media');
-            $lat = floatval($input['lat'] ?? $_POST['lat'] ?? 0);
-            $lng = floatval($input['lng'] ?? $_POST['lng'] ?? 0);
 
-            // Usuario por defecto si no hay sesion
-            $usuario_id = $_SESSION['usuario_id'] ?? 1;
+            if (!isset($_SESSION['user_id'])) {
+                throw new Exception("Debes iniciar sesión para crear reportes");
+            }
 
-            // ---- AUTO POPULATE CATEGORIA SI NO EXISTE ---- 
-            $catQuery = $conn->query("SELECT id FROM categorias WHERE nombre LIKE '%$tipoProblema%' LIMIT 1");
-            if ($catQuery && $catQuery->num_rows > 0) {
+            $usuario_id = $_SESSION['user_id'];
+
+            $tipoProblema = $conn->real_escape_string($_POST['tipoProblema']);
+            $descripcion = $conn->real_escape_string($_POST['descripcion']);
+            $fecha = $_POST['fecha'];
+            $hora = $_POST['hora'];
+            $gravedad = $_POST['gravedad'];
+            $lat = floatval($_POST['lat']);
+            $lng = floatval($_POST['lng']);
+
+            // CATEGORIA
+            $catQuery = $conn->query("SELECT id FROM categorias WHERE LOWER(nombre) LIKE LOWER('%$tipoProblema%') LIMIT 1");
+
+            if ($catQuery->num_rows > 0) {
                 $categoria_id = $catQuery->fetch_assoc()['id'];
             } else {
-                $conn->query("INSERT INTO categorias (nombre, descripcion) VALUES ('$tipoProblema', 'Categoría generada automáticamente')");
+                $conn->query("INSERT INTO categorias (nombre) VALUES ('$tipoProblema')");
                 $categoria_id = $conn->insert_id;
             }
 
-            // ---- AUTO POPULATE ESTADO SI NO EXISTE ---- 
-            $estQuery = $conn->query("SELECT id FROM estados WHERE nombre IN ('enviado', 'en_revision') LIMIT 1");
-            if ($estQuery && $estQuery->num_rows > 0) {
-                $estado_id = $estQuery->fetch_assoc()['id'];
-            } else {
-                $conn->query("INSERT INTO estados (nombre, descripcion, orden) VALUES ('enviado', 'Estado inicial autogenerado', 1)");
-                $estado_id = $conn->insert_id;
-            }
+            // ESTADO INICIAL
+            $est = $conn->query("SELECT id FROM estados WHERE nombre='enviado' LIMIT 1");
+            $estado_id = $est->fetch_assoc()['id'];
 
-            $fechaHora = $fecha . ' ' . $hora . ':00'; // Formato DATETIME
+            $fechaHora = "$fecha $hora:00";
 
-            $sql = "INSERT INTO reportes (usuario_id, categoria_id, estado_id, descripcion, fecha_hora_incidente, gravedad, latitud, longitud) 
-                    VALUES ($usuario_id, $categoria_id, $estado_id, '$descripcion', '$fechaHora', '$gravedad', $lat, $lng)";
-            
-            $res = $conn->query($sql);
-            if (!$res) {
-                throw new Exception("Error al guardar reporte en SQL: " . $conn->error);
-            }
+            $conn->query("INSERT INTO reportes 
+        (usuario_id, categoria_id, estado_id, descripcion, fecha_hora_incidente, gravedad, latitud, longitud)
+        VALUES 
+        ($usuario_id, $categoria_id, $estado_id, '$descripcion', '$fechaHora', '$gravedad', $lat, $lng)");
+
             $reporte_id = $conn->insert_id;
 
-            // Procesado de imágenes adjuntas
+            // IMÁGENES
             if (!empty($_FILES['imagenes']['name'][0])) {
-                $uploadDir = '../img/uploads/';
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-                foreach ($_FILES['imagenes']['name'] as $key => $name) {
-                    if ($_FILES['imagenes']['error'][$key] == 0) {
+                $dir = '../img/uploads/';
+                if (!is_dir($dir))
+                    mkdir($dir, 0777, true);
+
+                foreach ($_FILES['imagenes']['name'] as $i => $name) {
+                    if ($_FILES['imagenes']['error'][$i] == 0) {
                         $ext = pathinfo($name, PATHINFO_EXTENSION);
-                        // Limpieza de extensión
-                        $ext = strtolower($ext) ?: 'png';
-                        $newName = "rep_" . $reporte_id . "_" . time() . "_" . $key . "." . $ext;
-                        $target = $uploadDir . $newName;
-                        if (move_uploaded_file($_FILES['imagenes']['tmp_name'][$key], $target)) {
-                            // Guardamos URL relativa al host
-                            $urlPath = '/sc502-ln-proyecto-grupo5-ln-2026/img/uploads/' . $newName;
-                            $conn->query("INSERT INTO evidencias (reporte_id, url) VALUES ($reporte_id, '$urlPath')");
+                        $newName = "rep_{$reporte_id}_{$i}." . $ext;
+                        $path = $dir . $newName;
+
+                        if (move_uploaded_file($_FILES['imagenes']['tmp_name'][$i], $path)) {
+                            $url = "/sc502-ln-proyecto-grupo5-ln-2026/img/uploads/$newName";
+
+                            $conn->query("INSERT INTO evidencias (reporte_id, url, tipo) 
+                                  VALUES ($reporte_id, '$url', 'imagen')");
                         }
                     }
                 }
             }
 
-            $response = ['success' => true, 'reporte_id' => $reporte_id];
+            $response = ['success' => true];
             break;
         case 'marcar-leido-mensaje':
             $id = intval($input['id']);

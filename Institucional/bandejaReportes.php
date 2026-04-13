@@ -219,7 +219,7 @@ if ($resInst && $resInst->num_rows > 0) {
 
     <?php include '../Fragmentos/footer.php'; ?>
     
-    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
+    <script src="../JS/header-footer.js"></script>
     <script src="../JS/institucional.js?v=<?php echo time(); ?>"></script>
 
 </body>

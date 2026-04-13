@@ -1,4 +1,9 @@
-<?php session_start(); ?>
+<?php session_start(); 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: /sc502-ln-proyecto-grupo5-ln-2026/Index.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -97,7 +102,7 @@
     <?php include '../Fragmentos/footer.php'; ?>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
+    <script src="../JS/header-footer.js"></script>
     <script src="../JS/reportes.js?v=<?php echo time(); ?>"></script>
 
 </body>
