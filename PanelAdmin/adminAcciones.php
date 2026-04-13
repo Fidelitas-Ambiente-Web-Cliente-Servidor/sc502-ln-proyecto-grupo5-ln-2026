@@ -108,8 +108,10 @@ try {
 
         case 'crear-reporte':
 
-            if (!isset($_SESSION['user_id'])) {
-                throw new Exception("Debes iniciar sesión para crear reportes");
+            // Usuario por defecto si no hay sesion
+            $usuario_id = $_SESSION['user_id'] ?? null;
+            if (!$usuario_id) {
+                throw new Exception("Debes iniciar sesión para crear un reporte.");
             }
 
             $usuario_id = $_SESSION['user_id'];
