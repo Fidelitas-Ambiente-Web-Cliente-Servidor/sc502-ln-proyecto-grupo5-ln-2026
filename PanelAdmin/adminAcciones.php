@@ -169,7 +169,7 @@ try {
                 }
             }
 
-            $response = ['success' => true];
+            $response = ['success' => true, 'reporte_id' => $reporte_id];
             break;
         case 'marcar-leido-mensaje':
             $id = intval($input['id']);

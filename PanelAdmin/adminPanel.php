@@ -61,13 +61,33 @@ if($res_rep){
 
 // Obtener Mensajes (contacto)
 $mensajesList = [];
-$res_msg = $conn->query("SELECT id, nombre, correo, asunto, mensaje, leido, estado, fecha_envio FROM mensajes WHERE estado = 'activo' ORDER BY fecha_envio DESC");
-if($res_msg){
-    while($row = $res_msg->fetch_assoc()){
-        $row['id'] = intval($row['id']);
-        $row['leido'] = (bool)$row['leido'];
-        $row['fecha_envio'] = date('d/m/Y H:i', strtotime($row['fecha_envio']));
-        $mensajesList[] = $row;
+try {
+    $res_msg = $conn->query("SELECT id, nombre, correo, asunto, mensaje, leido, estado, fecha_envio FROM mensajes WHERE estado = 'activo' ORDER BY fecha_envio DESC");
+    if($res_msg){
+        while($row = $res_msg->fetch_assoc()){
+            $row['id'] = intval($row['id']);
+            $row['leido'] = (bool)$row['leido'];
+            $row['fecha_envio'] = date('d/m/Y H:i', strtotime($row['fecha_envio']));
+            $mensajesList[] = $row;
+        }
+    }
+} catch (mysqli_sql_exception $e) {
+    if (strpos($e->getMessage(), "Unknown column 'estado'") !== false) {
+        // La columna no existe, intentar crearla
+        $conn->query("ALTER TABLE mensajes ADD COLUMN estado ENUM('activo', 'inactivo') DEFAULT 'activo'");
+        // Intentar de nuevo
+        $res_msg = $conn->query("SELECT id, nombre, correo, asunto, mensaje, leido, estado, fecha_envio FROM mensajes WHERE estado = 'activo' ORDER BY fecha_envio DESC");
+        if($res_msg){
+            while($row = $res_msg->fetch_assoc()){
+                $row['id'] = intval($row['id']);
+                $row['leido'] = (bool)$row['leido'];
+                $row['fecha_envio'] = date('d/m/Y H:i', strtotime($row['fecha_envio']));
+                $mensajesList[] = $row;
+            }
+        }
+    } else {
+        // Otra excepción, lanzar de nuevo
+        throw $e;
     }
 }
 ?>

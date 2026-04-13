@@ -73,9 +73,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify({ accion: 'asignar-institucion', id_reporte: reporte_id, id_usuario: institucion_id })
             }).then(res => res.json()).then(data => {
                 if(data.success) {
-                    alert("Reporte asignado correctamente");
+                    alert("Reporte asignado correctamente con ID: " + reporte_id);
                 }else{
-                    alert("Error: " + data.message);
+                    alert("Hubo un problema: " + (data.message || "Error desconocido"));
                 }
             }).catch(e => console.error("Error", e));
         });
@@ -94,10 +94,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify({ accion: 'estado-reporte', id: reporte_id, estado: estado })
             }).then(res => res.json()).then(data => {
                 if(data.success) {
-                    alert("Reporte " + reporte_id + " actualizado a estado: " + estado);
+                    alert("Estado actualizado exitosamente al reporte con ID: " + reporte_id);
                     location.reload();
                 } else {
-                    alert("Error: " + data.message);
+                    alert("Hubo un problema: " + (data.message || "Error desconocido"));
                 }
             }).catch(e => console.error(e));
         });
@@ -121,10 +121,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify({ accion: 'agregar-comentario', id_reporte: reporte_id, texto: texto })
             }).then(res => res.json()).then(data => {
                 if(data.success){
-                    alert("Comentario agregado al reporte " + reporte_id);
+                    alert("Comentario guardado exitosamente para el reporte con ID: " + reporte_id);
                     document.getElementById("textoComentario").value = "";
                 }else{
-                    alert("Error: " + data.message);
+                    alert("Hubo un problema: " + (data.message || "Error desconocido"));
                 }
             });
         });
@@ -144,10 +144,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     body: JSON.stringify({ accion: 'cerrar-caso', id_reporte: reporte_id })
                 }).then(res => res.json()).then(data => {
                     if(data.success){
-                        alert("Reporte " + reporte_id + " cerrado correctamente");
+                        alert("Caso cerrado exitosamente para el reporte con ID: " + reporte_id);
                         location.reload();
                     }else{
-                        alert("Error: " + data.message);
+                        alert("Hubo un problema: " + (data.message || "Error desconocido"));
                     }
                 });
             }

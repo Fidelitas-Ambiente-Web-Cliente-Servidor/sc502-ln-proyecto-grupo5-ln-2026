@@ -9,6 +9,7 @@ $sql = "SELECT
             r.descripcion,
             r.gravedad,
             r.fecha_hora_incidente,
+            r.categoria_id,
             c.nombre AS tipo_nombre,
             e.nombre AS estado_nombre
         FROM reportes r
@@ -37,6 +38,7 @@ while ($row = $result->fetch_assoc()) {
         'id' => $row['id'],
         'lat' => floatval($row['latitud']),
         'lng' => floatval($row['longitud']),
+        'tipo_id' => $row['categoria_id'],
         'tipo' => ucfirst($row['tipo_nombre'] ?? 'General'),
         'estado' => $estadoTexto,
         'descripcion' => $row['descripcion'],
