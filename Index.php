@@ -26,14 +26,14 @@
                     reportes simulados en distintas zonas de Costa Rica.
                 </p>
                 <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
-                    <div class="hero-actions">
-                        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
-                            Crear reporte
-                        </a>
-                        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">
-                            Más información
-                        </a>
-                    </div>
+                <div class="hero-actions">
+                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
+                        Crear reporte
+                    </a>
+                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">
+                        Más información
+                    </a>
+                </div>
                 <?php endif; ?>
             </div>
         </section>
@@ -41,22 +41,19 @@
         <!-- Resumen -->
         <section class="stats-section">
             <div class="stat-card">
-                <h3>125</h3>
-                <p>Reportes simulados</p>
+                <h3>...</h3>
+                <p>Reportes registrados</p>
             </div>
-
             <div class="stat-card">
-                <h3>48</h3>
+                <h3>...</h3>
                 <p>En proceso</p>
             </div>
-
             <div class="stat-card">
-                <h3>67</h3>
+                <h3>...</h3>
                 <p>Resueltos</p>
             </div>
-
             <div class="stat-card">
-                <h3>10</h3>
+                <h3>...</h3>
                 <p>Zonas monitoreadas</p>
             </div>
         </section>
@@ -137,16 +134,16 @@
 
         <!-- Llamado a la acción -->
         <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
-            <section class="cta-section">
-                <h2>¿Deseas colaborar con el ambiente?</h2>
-                <p>
-                    Registra un nuevo reporte y ayuda a identificar problemas ambientales
-                    en distintas comunidades del país.
-                </p>
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
-                    Reportar ahora
-                </a>
-            </section>
+        <section class="cta-section">
+            <h2>¿Deseas colaborar con el ambiente?</h2>
+            <p>
+                Registra un nuevo reporte y ayuda a identificar problemas ambientales
+                en distintas comunidades del país.
+            </p>
+            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">
+                Reportar ahora
+            </a>
+        </section>
         <?php endif; ?>
     </main>
 

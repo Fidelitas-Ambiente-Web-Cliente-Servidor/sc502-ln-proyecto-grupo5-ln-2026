@@ -112,7 +112,10 @@ try {
             $lng = floatval($input['lng'] ?? $_POST['lng'] ?? 0);
 
             // Usuario por defecto si no hay sesion
-            $usuario_id = $_SESSION['usuario_id'] ?? 1;
+            $usuario_id = $_SESSION['user_id'] ?? null;
+            if (!$usuario_id) {
+                throw new Exception("Debes iniciar sesión para crear un reporte.");
+            }
 
             // ---- AUTO POPULATE CATEGORIA SI NO EXISTE ---- 
             $catQuery = $conn->query("SELECT id FROM categorias WHERE nombre LIKE '%$tipoProblema%' LIMIT 1");
