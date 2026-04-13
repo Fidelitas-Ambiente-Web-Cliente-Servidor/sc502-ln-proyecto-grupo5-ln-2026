@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert("Reporte enviado correctamente y guardado en MySQL con ID: " + data.reporte_id);
+                alert("Reporte enviado correctamente con ID: " + data.reporte_id);
                 formulario.reset();
                 preview.innerHTML = "";
             } else {
