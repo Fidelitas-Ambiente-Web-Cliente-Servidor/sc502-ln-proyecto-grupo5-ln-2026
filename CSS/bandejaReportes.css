@@ -209,3 +209,48 @@
         margin-top: 5px;
     }
 }
+
+/* Filtros institucional */
+.filtros-reportes-institucional {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 16px;
+    align-items: center;
+}
+.filtros-reportes-institucional input,
+.filtros-reportes-institucional select {
+    padding: 0.6rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    background-color: white;
+    flex: 1;
+    min-width: 150px;
+}
+.btn-limpiar {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-limpiar:hover {
+    background-color: #5a6268;
+}
+@media (max-width: 768px) {
+    .filtros-reportes-institucional {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filtros-reportes-institucional input,
+    .filtros-reportes-institucional select,
+    .btn-limpiar {
+        width: 100%;
+    }
+}

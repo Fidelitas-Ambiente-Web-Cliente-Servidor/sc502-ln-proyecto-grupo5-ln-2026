@@ -107,70 +107,106 @@ try {
             break;
 
         case 'crear-reporte':
+    // Validar sesión
+    if (!isset($_SESSION['user_id'])) {
+        throw new Exception('Debes iniciar sesión para crear un reporte.');
+    }
+    $usuario_id = (int)$_SESSION['user_id'];
 
-            // Usuario por defecto si no hay sesion
-            $usuario_id = $_SESSION['user_id'] ?? null;
-            if (!$usuario_id) {
-                throw new Exception("Debes iniciar sesión para crear un reporte.");
-            }
+    // Validar campos requeridos
+    $campos = ['tipoProblema', 'descripcion', 'fecha', 'hora', 'gravedad', 'lat', 'lng'];
+    foreach ($campos as $campo) {
+        if (empty($_POST[$campo])) {
+            throw new Exception("El campo $campo es obligatorio.");
+        }
+    }
 
-            $usuario_id = $_SESSION['user_id'];
+    $tipoProblema = trim($_POST['tipoProblema']);
+    $descripcion = trim($_POST['descripcion']);
+    $fecha = $_POST['fecha'];
+    $hora = $_POST['hora'];
+    $gravedad_raw = trim($_POST['gravedad']);
+    $lat = (float)$_POST['lat'];
+    $lng = (float)$_POST['lng'];
+    $fechaHora = "$fecha $hora:00";
 
-            $tipoProblema = $conn->real_escape_string($_POST['tipoProblema']);
-            $descripcion = $conn->real_escape_string($_POST['descripcion']);
-            $fecha = $_POST['fecha'];
-            $hora = $_POST['hora'];
-            $gravedad = $_POST['gravedad'];
-            $lat = floatval($_POST['lat']);
-            $lng = floatval($_POST['lng']);
+    // Validar gravedad (case-insensitive)
+    $allowed = ['baja', 'media', 'alta', 'critica'];
+    $gravedad = strtolower($gravedad_raw);
+    if (!in_array($gravedad, $allowed)) {
+        throw new Exception("Valor de gravedad no válido: '$gravedad_raw'. Debe ser: baja, media, alta, critica");
+    }
 
-            // CATEGORIA
-            $catQuery = $conn->query("SELECT id FROM categorias WHERE LOWER(nombre) LIKE LOWER('%$tipoProblema%') LIMIT 1");
+    // --- Categoría ---
+    $stmt = $conn->prepare("SELECT id FROM categorias WHERE LOWER(nombre) = LOWER(?)");
+    $stmt->bind_param("s", $tipoProblema);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res->num_rows > 0) {
+        $categoria_id = $res->fetch_assoc()['id'];
+    } else {
+        $stmt2 = $conn->prepare("INSERT INTO categorias (nombre) VALUES (?)");
+        $stmt2->bind_param("s", $tipoProblema);
+        $stmt2->execute();
+        $categoria_id = $conn->insert_id;
+        $stmt2->close();
+    }
+    $stmt->close();
 
-            if ($catQuery->num_rows > 0) {
-                $categoria_id = $catQuery->fetch_assoc()['id'];
-            } else {
-                $conn->query("INSERT INTO categorias (nombre) VALUES ('$tipoProblema')");
-                $categoria_id = $conn->insert_id;
-            }
+    // --- Estado inicial 'enviado' ---
+    $stmt = $conn->prepare("SELECT id FROM estados WHERE nombre = 'enviado' LIMIT 1");
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res->num_rows === 0) {
+        $stmt2 = $conn->prepare("INSERT INTO estados (nombre, descripcion, orden) VALUES ('enviado', 'Reporte enviado por usuario', 1)");
+        $stmt2->execute();
+        $estado_id = $conn->insert_id;
+        $stmt2->close();
+    } else {
+        $estado_id = $res->fetch_assoc()['id'];
+    }
+    $stmt->close();
 
-            // ESTADO INICIAL
-            $est = $conn->query("SELECT id FROM estados WHERE nombre='enviado' LIMIT 1");
-            $estado_id = $est->fetch_assoc()['id'];
+    // --- Insertar reporte ---
+    $sql = "INSERT INTO reportes (usuario_id, categoria_id, estado_id, descripcion, fecha_hora_incidente, gravedad, latitud, longitud) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    // Tipos: i=entero, s=string, d=double (decimal)
+    $stmt->bind_param("iiisssdd", $usuario_id, $categoria_id, $estado_id, $descripcion, $fechaHora, $gravedad, $lat, $lng);
+    if (!$stmt->execute()) {
+        throw new Exception("Error al guardar reporte: " . $stmt->error);
+    }
+    $reporte_id = $conn->insert_id;  // <--- IMPORTANTE: asignar el ID generado
+    $stmt->close();
 
-            $fechaHora = "$fecha $hora:00";
-
-            $conn->query("INSERT INTO reportes 
-        (usuario_id, categoria_id, estado_id, descripcion, fecha_hora_incidente, gravedad, latitud, longitud)
-        VALUES 
-        ($usuario_id, $categoria_id, $estado_id, '$descripcion', '$fechaHora', '$gravedad', $lat, $lng)");
-
-            $reporte_id = $conn->insert_id;
-
-            // IMÁGENES
-            if (!empty($_FILES['imagenes']['name'][0])) {
-                $dir = '../img/uploads/';
-                if (!is_dir($dir))
-                    mkdir($dir, 0777, true);
-
-                foreach ($_FILES['imagenes']['name'] as $i => $name) {
-                    if ($_FILES['imagenes']['error'][$i] == 0) {
-                        $ext = pathinfo($name, PATHINFO_EXTENSION);
-                        $newName = "rep_{$reporte_id}_{$i}." . $ext;
-                        $path = $dir . $newName;
-
-                        if (move_uploaded_file($_FILES['imagenes']['tmp_name'][$i], $path)) {
-                            $url = "/sc502-ln-proyecto-grupo5-ln-2026/img/uploads/$newName";
-
-                            $conn->query("INSERT INTO evidencias (reporte_id, url, tipo) 
-                                  VALUES ($reporte_id, '$url', 'imagen')");
-                        }
-                    }
+    // --- Subir imágenes (si existen) ---
+    if (isset($_FILES['imagenes']) && is_array($_FILES['imagenes']['name']) && !empty($_FILES['imagenes']['name'][0])) {
+        $dir = __DIR__ . '/../img/uploads/';
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $total_archivos = count($_FILES['imagenes']['name']);
+        for ($i = 0; $i < $total_archivos; $i++) {
+            if ($_FILES['imagenes']['error'][$i] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['imagenes']['name'][$i], PATHINFO_EXTENSION);
+                $nombre_archivo = "rep_{$reporte_id}_{$i}." . $ext;
+                $ruta_destino = $dir . $nombre_archivo;
+                if (move_uploaded_file($_FILES['imagenes']['tmp_name'][$i], $ruta_destino)) {
+                    $url = "/sc502-ln-proyecto-grupo5-ln-2026/img/uploads/$nombre_archivo";
+                    $stmt_img = $conn->prepare("INSERT INTO evidencias (reporte_id, url, tipo) VALUES (?, ?, 'imagen')");
+                    $stmt_img->bind_param("is", $reporte_id, $url);
+                    $stmt_img->execute();
+                    $stmt_img->close();
+                } else {
+                    // Opcional: registrar error de movimiento, pero no detenemos el proceso
+                    error_log("No se pudo mover la imagen $i para el reporte $reporte_id");
                 }
             }
+        }
+    }
 
-            $response = ['success' => true, 'reporte_id' => $reporte_id];
-            break;
+    $response = ['success' => true, 'reporte_id' => $reporte_id];
+    break;
         case 'marcar-leido-mensaje':
             $id = intval($input['id']);
             $conn->query("UPDATE mensajes SET leido = 1 WHERE id = $id");

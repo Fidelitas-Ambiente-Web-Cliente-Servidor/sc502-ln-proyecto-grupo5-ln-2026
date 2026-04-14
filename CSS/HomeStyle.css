@@ -15,7 +15,6 @@ body {
   background-color: var(--gray-light);
 }
 
-/* Contenedor principal */
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -209,7 +208,7 @@ body {
 .mapa-principal {
   width: 100%;
   height: 450px;
-  background-color: #d4e3fd; /* Color de fondo tipo agua */
+  background-color: #d4e3fd;
   border-radius: 24px;
   box-shadow: var(--shadow-hover);
   border: 3px solid var(--white);
@@ -231,13 +230,15 @@ body {
 .report-card {
   background-color: var(--white);
   border-radius: 20px;
-  padding: 2rem;
+  padding: 1.8rem;
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
   border-left: 6px solid var(--green);
   border-top: 1px solid rgba(0,0,0,0.03);
   border-right: 1px solid rgba(0,0,0,0.03);
   border-bottom: 1px solid rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
 }
 
 .report-card:hover {
@@ -253,6 +254,7 @@ body {
   border-bottom: 2px solid var(--green);
   padding-bottom: 0.5rem;
   display: inline-block;
+  align-self: flex-start;
 }
 
 .report-card p {
@@ -264,6 +266,62 @@ body {
 .report-card p strong {
   color: var(--green-dark);
   font-weight: 600;
+}
+
+.ver-mas {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1rem;
+  color: var(--green-dark);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+  align-self: flex-start;
+}
+
+.ver-mas:hover {
+  color: var(--green);
+  border-bottom-color: var(--green);
+  transform: translateX(4px);
+}
+
+.ver-mas::after {
+  content: "→";
+  transition: transform 0.2s ease;
+}
+
+.ver-mas:hover::after {
+  transform: translateX(4px);
+}
+
+/* Badges de estado con colores */
+.report-card .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.report-card .status-badge.pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.report-card .status-badge.en-proceso {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.report-card .status-badge.resuelto {
+    background-color: #d4edda;
+    color: #155724;
 }
 
 /* ===== CTA SECTION ===== */
@@ -308,71 +366,22 @@ body {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .home-container {
-    padding: 1rem;
-  }
-
-  .hero-section {
-    padding: 2.5rem 1rem;
-  }
-
-  .hero-content h2 {
-    font-size: 2.2rem;
-  }
-
-  .hero-content p {
-    font-size: 1.1rem;
-  }
-
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .map-filters {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .map-filters select {
-    width: 100%;
-  }
-
-  .mapa-principal {
-    height: 350px;
-  }
-
-  .stats-section {
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  
-  .report-list {
-    grid-template-columns: 1fr;
-  }
+  .home-container { padding: 1rem; }
+  .hero-section { padding: 2.5rem 1rem; }
+  .hero-content h2 { font-size: 2.2rem; }
+  .hero-content p { font-size: 1.1rem; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .map-filters { width: 100%; flex-direction: column; }
+  .map-filters select { width: 100%; }
+  .mapa-principal { height: 350px; }
+  .stats-section { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .report-list { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-  .stats-section {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .btn-principal,
-  .btn-secundario {
-    text-align: center;
-  }
-
-  .cta-section {
-    padding: 2rem 1rem;
-  }
-  
-  .cta-section h2 {
-    font-size: 1.8rem;
-  }
+  .stats-section { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .btn-principal, .btn-secundario { text-align: center; }
+  .cta-section { padding: 2rem 1rem; }
+  .cta-section h2 { font-size: 1.8rem; }
 }

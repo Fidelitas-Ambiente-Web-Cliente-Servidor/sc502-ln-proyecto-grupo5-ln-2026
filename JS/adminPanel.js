@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const cerrarModalDetalle = document.getElementById("cerrarModalDetalle");
     const btnVerMapa = document.getElementById("btnVerMapa");
 
-    // Variables de detalle
+    // Elementos del detalle
     const detalleId = document.getElementById("detalleId");
     const detalleTipo = document.getElementById("detalleTipo");
     const detalleUsuario = document.getElementById("detalleUsuario");
@@ -97,11 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ==================== RENDERIZAR REPORTES ====================
-    function renderReportes() {
+    // ==================== RENDERIZAR REPORTES (con soporte de filtros) ====================
+    function renderReportes(reportesMostrar) {
         if (!tablaReportes) return;
         tablaReportes.innerHTML = "";
-        reportes.forEach(reporte => {
+        reportesMostrar.forEach(reporte => {
             const fila = document.createElement("tr");
             fila.innerHTML = `
                 <td>${reporte.id}</td>
@@ -111,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${reporte.estado}</td>
                 <td>${reporte.fecha}</td>
                 <td>${reporte.hora}</td>
+                <td>${escapeHtml(reporte.institucion_asignada || 'No asignada')}</td>
                 <td>
                     <button class="accion-btn detalle-btn" data-id="${reporte.id}" data-accion="ver-detalle">Ver detalle</button>
                     <button class="accion-btn estado-btn" data-id="${reporte.id}" data-accion="estado-reporte">Cambiar Estado</button>
@@ -121,13 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ==================== RENDERIZAR MENSAJES (ACTUALIZACIÓN INMEDIATA) ====================
+    // ==================== RENDERIZAR MENSAJES ====================
     function renderMensajes() {
-        console.log("Renderizando mensajes, cantidad:", mensajes.length);
-        if (!tablaMensajes) {
-            console.error("No se encontró la tabla #tablaMensajes");
-            return;
-        }
+        if (!tablaMensajes) return;
         tablaMensajes.innerHTML = "";
         if (mensajes.length === 0) {
             const fila = document.createElement("tr");
@@ -187,6 +184,9 @@ document.addEventListener("DOMContentLoaded", function () {
         detalleDescripcion.textContent = reporte.descripcion;
         ubicacionActualReporte = reporte.ubicacion;
 
+        const detalleInstitucion = document.getElementById("detalleInstitucion");
+        if (detalleInstitucion) detalleInstitucion.textContent = reporte.institucion_asignada || "No asignada";
+
         detalleImagenes.innerHTML = "";
         if (reporte.imagenes && reporte.imagenes.length > 0) {
             reporte.imagenes.forEach(ruta => {
@@ -199,6 +199,65 @@ document.addEventListener("DOMContentLoaded", function () {
             detalleImagenes.innerHTML = "<p>No hay imágenes disponibles.</p>";
         }
         modalDetalle.style.display = "flex";
+    }
+
+    // ==================== FILTROS PARA REPORTES ====================
+    const filtroBusqueda = document.getElementById('filtroBusquedaReporte');
+    const filtroTipo = document.getElementById('filtroTipoReporte');
+    const filtroEstadoAdmin = document.getElementById('filtroEstadoReporteAdmin');
+    const filtroGravedad = document.getElementById('filtroGravedadReporte');
+    const filtroInstitucion = document.getElementById('filtroInstitucionReporte');
+    const btnLimpiar = document.getElementById('btnLimpiarFiltrosReportes');
+
+    function aplicarFiltrosReportes() {
+        let filtrados = [...reportes];
+        
+        const busqueda = filtroBusqueda?.value.trim().toLowerCase() || '';
+        if (busqueda) {
+            filtrados = filtrados.filter(r => 
+                r.id.toString().includes(busqueda) ||
+                (r.descripcion && r.descripcion.toLowerCase().includes(busqueda)) ||
+                (r.usuario && r.usuario.toLowerCase().includes(busqueda))
+            );
+        }
+        
+        const tipo = filtroTipo?.value || '';
+        if (tipo) {
+            filtrados = filtrados.filter(r => r.tipo.toLowerCase() === tipo.toLowerCase());
+        }
+        
+        const estado = filtroEstadoAdmin?.value || '';
+        if (estado) {
+            filtrados = filtrados.filter(r => r.estado === estado);
+        }
+        
+        const gravedad = filtroGravedad?.value || '';
+        if (gravedad) {
+            filtrados = filtrados.filter(r => r.gravedad === gravedad);
+        }
+        
+        const institucion = filtroInstitucion?.value || '';
+        if (institucion) {
+            filtrados = filtrados.filter(r => (r.institucion_asignada || '') === institucion);
+        }
+        
+        renderReportes(filtrados);
+    }
+
+    if (filtroBusqueda) filtroBusqueda.addEventListener('input', aplicarFiltrosReportes);
+    if (filtroTipo) filtroTipo.addEventListener('change', aplicarFiltrosReportes);
+    if (filtroEstadoAdmin) filtroEstadoAdmin.addEventListener('change', aplicarFiltrosReportes);
+    if (filtroGravedad) filtroGravedad.addEventListener('change', aplicarFiltrosReportes);
+    if (filtroInstitucion) filtroInstitucion.addEventListener('change', aplicarFiltrosReportes);
+    if (btnLimpiar) {
+        btnLimpiar.addEventListener('click', () => {
+            if (filtroBusqueda) filtroBusqueda.value = '';
+            if (filtroTipo) filtroTipo.value = '';
+            if (filtroEstadoAdmin) filtroEstadoAdmin.value = '';
+            if (filtroGravedad) filtroGravedad.value = '';
+            if (filtroInstitucion) filtroInstitucion.value = '';
+            aplicarFiltrosReportes();
+        });
     }
 
     // ==================== EVENTOS DE USUARIOS ====================
@@ -277,7 +336,8 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (accion === "eliminar-reporte") {
                 reportes = reportes.filter(r => r.id !== id);
             }
-            renderReportes();
+            // Actualizar vista filtrada
+            aplicarFiltrosReportes();
             renderEstadisticas();
 
             fetch('adminAcciones.php', {
@@ -289,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 if (!data.success) {
                     reportes = oldReportes;
-                    renderReportes();
+                    aplicarFiltrosReportes();
                     renderEstadisticas();
                     showToast("Error: " + data.message, true);
                 } else {
@@ -298,14 +358,14 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(err => {
                 reportes = oldReportes;
-                renderReportes();
+                aplicarFiltrosReportes();
                 renderEstadisticas();
                 showToast("Error de red", true);
             });
         });
     }
 
-    // ==================== EVENTOS DE MENSAJES (INSTANTÁNEO) ====================
+    // ==================== EVENTOS DE MENSAJES ====================
     if (tablaMensajes) {
         tablaMensajes.addEventListener("click", function (e) {
             const boton = e.target.closest("button");
@@ -315,25 +375,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (accion === "eliminar-mensaje" && !confirm("¿Eliminar este mensaje permanentemente?")) return;
 
-            // Guardar estado anterior para posible reversión
             let oldMensajes = [...mensajes];
 
-            // ACTUALIZACIÓN OPTIMISTA INMEDIATA
             if (accion === "marcar-leido-mensaje") {
-                // Convertimos m.id a número para asegurar que la comparación coincida con 'id'
                 mensajes = mensajes.map(m => Number(m.id) === id ? { ...m, leido: true } : m);
-                console.log("Mensaje marcado como leído (optimista)");
             } else if (accion === "eliminar-mensaje") {
-                // Convertimos m.id a número aquí también
                 mensajes = mensajes.filter(m => Number(m.id) !== id);
-                console.log("Mensaje eliminado (optimista)");
             }
 
-            // Renderizar la tabla y estadísticas al instante
             renderMensajes();
             renderEstadisticas();
 
-            // Llamada al servidor (si falla, revertir)
             fetch('adminAcciones.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -376,9 +428,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // ==================== INICIALIZACIÓN ====================
-    console.log("Inicializando panel con", mensajes.length, "mensajes");
     renderUsuarios();
-    renderReportes();
     renderMensajes();
     renderEstadisticas();
+    // Inicializar tabla de reportes con los datos originales (sin filtros)
+    renderReportes(reportes);
 });

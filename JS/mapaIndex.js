@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function cargarReportes() {
-    fetch('/sc502-ln-proyecto-grupo5-ln-2026/api/reportes.php?t=' + new Date().getTime())
+    fetch('/sc502-ln-proyecto-grupo5-ln-2026/api/reportes.php')
         .then(response => response.json())
         .then(data => {
             window.reportesData = data; // guardar globalmente para filtros
@@ -63,7 +63,6 @@ function renderizarMarcadores(reportes) {
 
         markers.push({
             marker: marker,
-            tipo_id: r.tipo_id,
             tipo: r.tipo,
             estado: r.estado
         });
@@ -84,7 +83,7 @@ function aplicarFiltros() {
     const estadoSeleccionado = document.getElementById('filtroEstado').value;
 
     markers.forEach(item => {
-        const coincideTipo = (tipoSeleccionado === 'todos') || (item.tipo_id == tipoSeleccionado);
+        const coincideTipo = (tipoSeleccionado === 'todos') || (item.tipo.toLowerCase() === tipoSeleccionado);
         const coincideEstado = (estadoSeleccionado === 'todos') || (item.estado.toLowerCase() === estadoSeleccionado);
 
         if (coincideTipo && coincideEstado) {

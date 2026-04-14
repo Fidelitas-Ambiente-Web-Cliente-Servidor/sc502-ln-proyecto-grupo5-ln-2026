@@ -1,12 +1,10 @@
 <?php 
 session_start();
-require_once 'conexion.php'; // Asegurar que la conexión está disponible
+require_once 'conexion.php';
 
-// Consultar estadísticas
 $totalReportes = 0;
 $enProceso = 0;
 $resueltos = 0;
-$zonasMonitoreadas = 0;
 
 $resultTotal = $conn->query("SELECT COUNT(*) as total FROM reportes");
 if ($resultTotal) $totalReportes = $resultTotal->fetch_assoc()['total'];
@@ -16,18 +14,6 @@ if ($resultProceso) $enProceso = $resultProceso->fetch_assoc()['total'];
 
 $resultResueltos = $conn->query("SELECT COUNT(*) as total FROM reportes r JOIN estados e ON r.estado_id = e.id WHERE e.nombre IN ('resuelto', 'cerrado')");
 if ($resultResueltos) $resueltos = $resultResueltos->fetch_assoc()['total'];
-
-$resultZonas = $conn->query("SELECT COUNT(DISTINCT latitud, longitud) as total FROM reportes WHERE latitud IS NOT NULL AND longitud IS NOT NULL");
-if ($resultZonas) $zonasMonitoreadas = $resultZonas->fetch_assoc()['total'];
-
-// Obtener categorías para los filtros
-$categoriasMap = [];
-$categoriasQuery = $conn->query("SELECT id, nombre FROM categorias WHERE activo = 1 ORDER BY nombre ASC");
-if ($categoriasQuery) {
-    while ($row = $categoriasQuery->fetch_assoc()) {
-        $categoriasMap[] = $row;
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -47,83 +33,38 @@ if ($categoriasQuery) {
     <?php include 'Fragmentos/header.php'; ?>
 
     <main class="home-container">
-        <!-- Hero / Bienvenida -->
         <section class="hero-section">
             <div class="hero-content">
                 <h2>Bienvenido a EcoAlerta CR</h2>
-                <p>
-                    Plataforma para reportar incidentes ambientales y visualizar
-                    reportes simulados en distintas zonas de Costa Rica.
-                </p>
-                <?php if (!isset($_SESSION['user_type'])): ?>
+                <p>Plataforma para reportar incidentes ambientales y visualizar reportes simulados en distintas zonas de Costa Rica.</p>
+                <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
                 <div class="hero-actions">
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/InicioS.php" class="btn-principal">
-                        Iniciar Sesión
-                    </a>
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">
-                        Más información
-                    </a>
-                </div>
-                <?php elseif ($_SESSION['user_type'] === 'usuario'): ?>
-                <div class="hero-actions">
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php" class="btn-principal">
-                        Crear reporte
-                    </a>
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">
-                        Más información
-                    </a>
-                </div>
-                <?php elseif ($_SESSION['user_type'] === 'admin'): ?>
-                <div class="hero-actions">
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.php" class="btn-principal">
-                        Panel
-                    </a>
-                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.php" class="btn-secundario">
-                        Bandeja Reportes
-                    </a>
+                    <a href="http://localhost:8080/sc502-ln-proyecto-grupo5-ln-2026/Reportes/nuevoReporte.php" class="btn-principal">Crear reporte</a>
+                    <a href="/sc502-ln-proyecto-grupo5-ln-2026/Informacion/vistaInformacion.php" class="btn-secundario">Más información</a>
                 </div>
                 <?php endif; ?>
             </div>
         </section>
 
-        <!-- Resumen / Estadísticas reales -->
         <section class="stats-section">
-            <div class="stat-card">
-                <h3><?php echo $totalReportes; ?></h3>
-                <p>Reportes registrados</p>
-            </div>
-            <div class="stat-card">
-                <h3><?php echo $enProceso; ?></h3>
-                <p>En proceso</p>
-            </div>
-            <div class="stat-card">
-                <h3><?php echo $resueltos; ?></h3>
-                <p>Resueltos</p>
-            </div>
-            <div class="stat-card">
-                <h3><?php echo $zonasMonitoreadas; ?></h3>
-                <p>Zonas monitoreadas</p>
-            </div>
+            <div class="stat-card"><h3><?php echo $totalReportes; ?></h3><p>Reportes registrados</p></div>
+            <div class="stat-card"><h3><?php echo $enProceso; ?></h3><p>En proceso</p></div>
+            <div class="stat-card"><h3><?php echo $resueltos; ?></h3><p>Resueltos</p></div>
+            <div class="stat-card"><h3>7</h3><p>Zonas monitoreadas</p></div>
         </section>
 
-        <!-- Mapa principal -->
         <section class="map-section">
             <div class="section-header">
-                <div>
-                    <h2>Mapa de reportes</h2>
-                    <p>
-                        Visualiza los incidentes ambientales simulados registrados en el sistema.
-                    </p>
-                </div>
-
+                <div><h2>Mapa de reportes</h2><p>Visualiza los incidentes ambientales simulados registrados en el sistema.</p></div>
                 <div class="map-filters">
                     <select id="filtroTipo">
                         <option value="todos">Tipos</option>
-                        <?php foreach ($categoriasMap as $cat): ?>
-                            <option value="<?php echo htmlspecialchars($cat['id']); ?>"><?php echo htmlspecialchars(ucfirst($cat['nombre'])); ?></option>
-                        <?php endforeach; ?>
+                        <option value="contaminacion">Contaminación</option>
+                        <option value="tala">Tala ilegal</option>
+                        <option value="quema">Quema de residuos</option>
+                        <option value="fauna">Daño a fauna</option>
+                        <option value="agua">Contaminación de agua</option>
                     </select>
-
                     <select id="filtroEstado">
                         <option value="todos">Estados</option>
                         <option value="pendiente">Pendiente</option>
@@ -132,19 +73,13 @@ if ($categoriasQuery) {
                     </select>
                 </div>
             </div>
-
             <div id="mapaReportes" class="mapa-principal"></div>
         </section>
 
-        <!-- Reportes recientes desde la BD -->
         <section class="recent-section">
             <div class="section-header">
-                <div>
-                    <h2>Reportes recientes</h2>
-                    <p>Últimos incidentes simulados registrados en la plataforma.</p>
-                </div>
+                <div><h2>Reportes recientes</h2><p>Últimos incidentes registrados en nuestra plataforma.</p></div>
             </div>
-
             <div class="report-list">
                 <?php
                 $recientes = $conn->query("
@@ -166,15 +101,24 @@ if ($categoriasQuery) {
                             'cerrado' => 'Resuelto'
                         ];
                         $estado = $estadoMap[strtolower($row['estado_nombre'] ?? 'enviado')] ?? 'Pendiente';
+                        // Clase CSS para el color
+                        switch ($estado) {
+                            case 'Pendiente': $estadoClase = 'pendiente'; break;
+                            case 'En proceso': $estadoClase = 'en-proceso'; break;
+                            case 'Resuelto': $estadoClase = 'resuelto'; break;
+                            default: $estadoClase = '';
+                        }
                         $fecha = date('d/m/Y', strtotime($row['fecha_hora_incidente']));
                         $tipo = ucfirst($row['tipo_nombre'] ?? 'General');
                 ?>
                     <article class="report-card">
                         <h3><?php echo htmlspecialchars($tipo); ?></h3>
                         <p><strong>Fecha:</strong> <?php echo $fecha; ?></p>
-                        <p><strong>Estado:</strong> <?php echo $estado; ?></p>
+                        <p><strong>Estado:</strong> <span class="status-badge <?php echo $estadoClase; ?>"><?php echo $estado; ?></span></p>
                         <p><?php echo htmlspecialchars(substr($row['descripcion'], 0, 120)) . '…'; ?></p>
-                        <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/detalle.php?id=<?php echo $row['id']; ?>" class="ver-mas">Ver más →</a>
+                        <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
+                            <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php" class="ver-mas">Ver más →</a>
+                        <?php endif; ?>
                     </article>
                 <?php 
                     endwhile;
@@ -185,55 +129,16 @@ if ($categoriasQuery) {
             </div>
         </section>
 
-        <!-- Llamado a la acción -->
-        <?php if (!isset($_SESSION['user_type'])): ?>
-        <section class="cta-section" style="text-align: center; padding: 3rem 1rem; background: var(--fondo-claro); border-top: 1px solid var(--borde-claro);">
+        <?php if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'): ?>
+        <section class="cta-section">
             <h2>¿Deseas colaborar con el ambiente?</h2>
-            <p style="max-width: 800px; margin: 0 auto; color: var(--texto-secundario);">
-                Únete a EcoAlerta CR para reportar y ayudar a identificar problemas ambientales
-                en distintas comunidades del país.
-            </p>
-            <div class="cta-actions" style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem;">
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/InicioS.php" class="btn-principal">
-                    Iniciar Sesión
-                </a>
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Auth/Registro.php" class="btn-secundario">
-                    Registrarse
-                </a>
-            </div>
-        </section>
-        <?php elseif ($_SESSION['user_type'] === 'usuario'): ?>
-        <section class="cta-section" style="text-align: center; padding: 3rem 1rem; background: var(--fondo-claro); border-top: 1px solid var(--borde-claro);">
-            <h2>¿Qué esperas para enviar una alerta?</h2>
-            <p style="max-width: 800px; margin: 0 auto; color: var(--texto-secundario);">
-                Registra un nuevo reporte, adjunta evidencia y ayuda a mantener nuestra comunidad libre de contaminación.
-            </p>
-            <div style="margin-top: 1.5rem;">
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php" class="btn-principal">
-                    Reportar ahora
-                </a>
-            </div>
-        </section>
-        <?php elseif ($_SESSION['user_type'] === 'admin'): ?>
-        <section class="cta-section" style="text-align: center; padding: 3rem 1rem; background: var(--fondo-claro); border-top: 1px solid var(--borde-claro);">
-            <h2>Atención de Reportes Activos</h2>
-            <p style="max-width: 800px; margin: 0 auto; color: var(--texto-secundario);">
-                Accede a la bandeja institucional para revisar incidentes pendientes o al panel de administración para gestionar la plataforma.
-            </p>
-            <div class="cta-actions" style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem;">
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/Institucional/bandejaReportes.php" class="btn-principal">
-                    Bandeja de Reportes
-                </a>
-                <a href="/sc502-ln-proyecto-grupo5-ln-2026/PanelAdmin/adminPanel.php" class="btn-secundario">
-                    Panel de Control
-                </a>
-            </div>
+            <p>Registra un nuevo reporte y ayuda a identificar problemas ambientales en distintas comunidades del país.</p>
+            <a href="http://localhost:8080/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php" class="btn-principal">Reportar ahora</a>
         </section>
         <?php endif; ?>
     </main>
 
     <?php include 'Fragmentos/footer.php'; ?>
-
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/header-footer.js"></script>
     <script src="/sc502-ln-proyecto-grupo5-ln-2026/JS/mapaIndex.js"></script>

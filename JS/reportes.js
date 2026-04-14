@@ -72,12 +72,14 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(res => res.json())
         .then(data => {
-         if (data.success) {
-        window.location.href = '/sc502-ln-proyecto-grupo5-ln-2026/Reportes/vistaReportes.php';
-        } else {
-        alert("Hubo un problema: " + data.message);
-    }
-})
+            if (data.success) {
+                alert("Reporte enviado correctamente con ID: " + data.reporte_id);
+                formulario.reset();
+                preview.innerHTML = "";
+            } else {
+                alert("Hubo un problema: " + data.message);
+            }
+        })
         .catch(err => console.error("Error enviando reporte:", err));
     });
 

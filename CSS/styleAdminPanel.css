@@ -1,3 +1,5 @@
+/* styleAdminPanel.css - Panel de Administración */
+
 .admin-main {
     width: 90%;
     max-width: 1200px;
@@ -59,6 +61,7 @@
     margin-bottom: 15px;
 }
 
+/* Tablas */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -77,6 +80,7 @@
     color: white;
 }
 
+/* Botones de acción genéricos */
 .accion-btn {
     border: none;
     padding: 8px 10px;
@@ -91,7 +95,6 @@
 .estado-btn {
     background-color: #f0a500;
 }
-
 .estado-btn:hover {
     background-color: #d99100;
 }
@@ -99,7 +102,6 @@
 .rol-btn {
     background-color: #2d89ef;
 }
-
 .rol-btn:hover {
     background-color: #1c6fca;
 }
@@ -107,7 +109,6 @@
 .eliminar-btn {
     background-color: #d64545;
 }
-
 .eliminar-btn:hover {
     background-color: #b73232;
 }
@@ -115,7 +116,6 @@
 .detalle-btn {
     background-color: #6c63ff;
 }
-
 .detalle-btn:hover {
     background-color: #574fd6;
 }
@@ -123,11 +123,18 @@
 .mapa-btn {
     background-color: #198754;
 }
-
 .mapa-btn:hover {
     background-color: #146c43;
 }
 
+.leido-btn {
+    background-color: #28a745;
+}
+.leido-btn:hover {
+    background-color: #218838;
+}
+
+/* Estadísticas */
 .stats-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -155,10 +162,7 @@
     margin: 0;
 }
 
-/* 
-   MODAL detalle reporte
-*/
-
+/* Modal detalle reporte */
 .modal-detalle {
     display: none;
     position: fixed;
@@ -222,6 +226,7 @@
     border: 1px solid #ddd;
 }
 
+/* Estado de mensajes en tabla */
 .estado-mensaje {
     display: inline-block;
     padding: 4px 8px;
@@ -238,6 +243,44 @@
     color: #856404;
 }
 
+/* Filtros para reportes en admin */
+.filtros-reportes-admin {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 16px;
+    align-items: center;
+}
+
+.filtros-reportes-admin input,
+.filtros-reportes-admin select {
+    padding: 0.6rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    background-color: white;
+    flex: 1;
+    min-width: 150px;
+}
+
+.filtros-reportes-admin button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.filtros-reportes-admin button:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .admin-main {
         width: 95%;

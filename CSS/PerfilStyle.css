@@ -329,11 +329,11 @@
   border-color: var(--white);
 }
 
-/* ===== TIMELINE (SEGUIMIENTO) ===== */
+/* ===== TIMELINE (SEGUIMIENTO) – VERSIÓN MEJORADA ===== */
 .page-perfil .timeline {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.5rem;
 }
 
 .page-perfil .timeline-item {
@@ -377,6 +377,10 @@
 
 .page-perfil .timeline-content {
   flex: 1;
+  background: transparent;
+  padding: 0;
+  border-left: none;
+  border-radius: 0;
 }
 
 .page-perfil .timeline-fecha {
@@ -407,194 +411,208 @@
   margin-top: 0.3rem;
 }
 
+/* Botón "Ver reporte" dentro del seguimiento */
+.page-perfil .btn-ver-reporte-seguimiento {
+  background: none;
+  border: 1px solid var(--green);
+  color: var(--green-dark);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+}
+
+.page-perfil .btn-ver-reporte-seguimiento:hover {
+  background-color: var(--green);
+  color: white;
+  transform: translateY(-1px);
+}
+
 /* Filtros en la sección de reportes */
 .page-perfil .filtros-reportes {
-    display: flex;
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    align-items: center;
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .page-perfil .filtros-reportes select,
 .page-perfil .filtros-reportes input {
-    padding: 0.6rem 1.2rem;
-    border: 1.5px solid #e0e0e0;
-    border-radius: 30px;
-    font-size: 0.95rem;
-    outline: none;
-    transition: all 0.2s;
-    background-color: var(--white);
+  padding: 0.6rem 1.2rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s;
+  background-color: var(--white);
 }
 
 .page-perfil .filtros-reportes select {
-    min-width: 160px;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23263238' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
+  min-width: 160px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23263238' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
 }
 
 .page-perfil .filtros-reportes select:focus,
 .page-perfil .filtros-reportes input:focus {
-    border-color: var(--green);
-    box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.12);
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.12);
 }
 
 .page-perfil .filtros-reportes input {
-    flex: 1;
-    min-width: 200px;
+  flex: 1;
+  min-width: 200px;
 }
 
 .page-perfil .filtros-reportes button {
-    background-color: var(--green);
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 0.6rem 1.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  background-color: var(--green);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .page-perfil .filtros-reportes button:hover {
-    background-color: var(--green-dark);
+  background-color: var(--green-dark);
 }
 
 /* Mensaje cuando no hay resultados */
 .page-perfil .sin-resultados {
-    text-align: center;
-    color: #666;
-    padding: 2rem;
-    background-color: var(--gray-light);
-    border-radius: 16px;
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+  background-color: var(--gray-light);
+  border-radius: 16px;
 }
 
+/* Alertas */
 .page-perfil .alert {
-    margin-bottom: 2rem;
-    padding: 1rem 1.5rem;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-weight: 500;
-    animation: slideIn 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    backdrop-filter: blur(10px);
-}
-
-/* Estilos para mensajes */
-.estado-mensaje {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-.estado-mensaje.leido {
-    background-color: #d4edda;
-    color: #155724;
-}
-.estado-mensaje.no-leido {
-    background-color: #fff3cd;
-    color: #856404;
-}
-.btn-ver-mensaje {
-    background-color: #6c63ff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 20px;
-    color: white;
-    cursor: pointer;
-    margin-top: 5px;
-    font-size: 0.75rem;
-}
-.btn-ver-mensaje:hover {
-    background-color: #574fd6;
+  margin-bottom: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  backdrop-filter: blur(10px);
 }
 
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .page-perfil .alert-success {
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-    border-left: 6px solid #2e7d32;
-    color: #1b5e20;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-left: 6px solid #2e7d32;
+  color: #1b5e20;
 }
 
 .page-perfil .alert-success .alert-icon {
-    font-size: 1.8rem;
-    font-weight: bold;
-    background: #2e7d32;
-    color: white;
-    width: 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(46,125,50,0.3);
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: #2e7d32;
+  color: white;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(46,125,50,0.3);
 }
 
 .page-perfil .alert-error {
-    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-    border-left: 6px solid #c62828;
-    color: #b71c1c;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border-left: 6px solid #c62828;
+  color: #b71c1c;
 }
 
 .page-perfil .alert-error .alert-icon {
-    font-size: 1.6rem;
-    font-weight: bold;
-    background: #c62828;
-    color: white;
-    width: 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(198,40,40,0.3);
+  font-size: 1.6rem;
+  font-weight: bold;
+  background: #c62828;
+  color: white;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(198,40,40,0.3);
 }
 
 .page-perfil .alert-message-list {
-    margin: 0;
-    padding-left: 1.2rem;
-    list-style: none;
+  margin: 0;
+  padding-left: 1.2rem;
+  list-style: none;
 }
 
 .page-perfil .alert-message-list li {
-    margin: 0.2rem 0;
-    position: relative;
+  margin: 0.2rem 0;
+  position: relative;
 }
 
 .page-perfil .alert-message-list li::before {
-    content: "•";
-    color: #c62828;
-    font-weight: bold;
-    display: inline-block;
-    width: 1rem;
-    margin-left: -1rem;
+  content: "•";
+  color: #c62828;
+  font-weight: bold;
+  display: inline-block;
+  width: 1rem;
+  margin-left: -1rem;
 }
 
 .page-perfil .alert-message {
-    flex: 1;
+  flex: 1;
+}
+
+/* Estilos para mensajes de contacto */
+.estado-mensaje {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.estado-mensaje.leido {
+  background-color: #d4edda;
+  color: #155724;
+}
+.estado-mensaje.no-leido {
+  background-color: #fff3cd;
+  color: #856404;
+}
+.btn-ver-mensaje {
+  background-color: #6c63ff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  margin-top: 5px;
+  font-size: 0.75rem;
+}
+.btn-ver-mensaje:hover {
+  background-color: #574fd6;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
-    .page-perfil .alert {
-        flex-direction: column;
-        text-align: center;
-    }
+  .page-perfil .alert {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 @media (max-width: 768px) {
